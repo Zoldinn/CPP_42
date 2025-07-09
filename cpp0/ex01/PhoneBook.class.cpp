@@ -1,5 +1,5 @@
 #include <iostream>
-#include "phonebook.class.hpp"
+#include "PhoneBook.class.hpp"
 
 PhoneBook::PhoneBook(void)
 {
@@ -13,7 +13,17 @@ PhoneBook::~PhoneBook(void)
 	return;
 }
 
-int	PhoneBook::getNbContact(void)
+void	PhoneBook::exit(void)
 {
-	return (PhoneBook::_nbContact);
+	exit();
+}
+
+void	PhoneBook::add(void)
+{
+	return;
+}
+
+void	PhoneBook::search(void)
+{
+	return;
 }

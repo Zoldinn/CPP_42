@@ -9,11 +9,12 @@ class PhoneBook
 		PhoneBook(void);
 		~PhoneBook(void);
 
-		static int	getNbContact(void);
+		void		add(void);
+		void		search(void);
+		void		exit(void);
 
 	private:
-		static int	_nbContact;
-		Contact		_contact[8];
+		std::map<std::string, Contact>	_contact;
 };
 
 #endif
