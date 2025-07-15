@@ -1,20 +1,23 @@
 #ifndef CONTACT_CLASS_HPP
 # define CONTACT_CLASS_HPP
 
-# include <map>
-# include <string>
+# include <iostream>
 
 class Contact
 {
 	public:
 		Contact(void);
 		~Contact(void);
-		
-		std::string	getInfo(std::string info);
+
+		void		initContact(void);
+		std::string	getInfo(std::string info) const;
 
 	private:
-		std::map<std::string, std::string>	_infos;
-
+		std::string	_firstName;
+		std::string	_lastName;
+		std::string	_nickname;
+		std::string	_phoneNumber;
+		std::string	_darkestSecret;
 };
 
 #endif

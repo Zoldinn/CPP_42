@@ -1,6 +1,7 @@
 #ifndef PHONEBOOK_CLASS_HPP
 # define PHONEBOOK_CLASS_HPP
 
+# include <iostream>
 # include "Contact.class.hpp"
 
 class PhoneBook
@@ -9,12 +10,12 @@ class PhoneBook
 		PhoneBook(void);
 		~PhoneBook(void);
 
-		void		add(void);
-		void		search(void);
-		void		exit(void);
+		void	add(void);
+		void	search(void);
+		int		nbContact;
 
 	private:
-		std::map<std::string, Contact>	_contact;
+		Contact	_book[8];
 };
 
 #endif
