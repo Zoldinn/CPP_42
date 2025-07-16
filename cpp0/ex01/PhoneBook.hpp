@@ -2,7 +2,7 @@
 # define PHONEBOOK_CLASS_HPP
 
 # include <iostream>
-# include "Contact.class.hpp"
+# include "Contact.hpp"
 
 class PhoneBook
 {
@@ -11,10 +11,10 @@ class PhoneBook
 		~PhoneBook(void);
 
 		void	add(void);
-		void	search(void);
-		int		nbContact;
+		void	search(void) const;
 
 	private:
+		int		_iContact;
 		Contact	_book[8];
 };
 

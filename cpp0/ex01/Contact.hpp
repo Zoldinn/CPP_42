@@ -9,7 +9,7 @@ class Contact
 		Contact(void);
 		~Contact(void);
 
-		void		initContact(void);
+		void		setContact(void);
 		std::string	getInfo(std::string info) const;
 
 	private:

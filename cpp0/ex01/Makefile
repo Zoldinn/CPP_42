@@ -4,7 +4,7 @@ CC = c++
 
 OBJ_DIR = obj
 
-SRC = main.cpp Contact.class.cpp PhoneBook.class.cpp
+SRC = main.cpp Contact.cpp PhoneBook.cpp
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.cpp=.o))
 
 all: $(NAME)

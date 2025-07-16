@@ -1,5 +1,5 @@
 #include <iostream>
-#include "PhoneBook.class.hpp"
+#include "PhoneBook.hpp"
 
 int	main(void)
 {
