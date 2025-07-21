@@ -1,14 +1,8 @@
 #include <iostream>
 #include "Contact.hpp"
 
-Contact::Contact(void)
+Contact::Contact(void) : isCreated(false)
 {
-	this->_firstName = "default";
-	this->_lastName = "default";
-	this->_nickname = "default";
-	this->_phoneNumber = "default";
-	this->_darkestSecret = "default";
-
 	return;
 }
 
@@ -34,30 +28,34 @@ void	Contact::setContact(void)
 	std::cout << ">Darkest secret : ";
 	std::cin >> this->_darkestSecret;
 
-	return;
+	this->isCreated = true;
 }
 
 std::string	Contact::getInfo(std::string info) const
 {
-	if (info == "first_name" && this->_firstName != "default")
+	if (info == "first_name" && this->isCreated == true)
 		return (this->_firstName);
-	else
-		return ("");
-	if (info == "last_name" && this->_lastName != "default")
+	if (info == "last_name" && this->isCreated == true)
 		return (this->_lastName);
-	else
-		return ("");
-	if (info == "nickname" && this->_nickname != "default")
+	if (info == "nickname" && this->isCreated == true)
 		return (this->_nickname);
-	else
-		return ("");
-	if (info == "phone_number" && this->_phoneNumber != "default")
+	if (info == "phone_number" && this->isCreated == true)
 		return (this->_phoneNumber);
-	else
-		return ("");
-	if (info == "darkest_secret" && this->_darkestSecret != "default")
+	if (info == "darkest_secret" && this->isCreated == true)
 		return (this->_darkestSecret);
-	else
-		return ("");
 	return ("");
+}
+
+void	Contact::printInfo() const
+{
+	if (this->isCreated == false)
+	{
+		std::cout << "No informations" << std::endl;
+		return ;
+	}
+	std::cout << "First name | \t" << this->_firstName << std::endl;
+	std::cout << "Last name | \t" << this->_lastName << std::endl;
+	std::cout << "Nickname | \t" << this->_nickname << std::endl;
+	std::cout << "Phone number | \t" << this->_phoneNumber << std::endl;
+	std::cout << "Darkest Secret | \t" << this->_darkestSecret << std::endl;
 }

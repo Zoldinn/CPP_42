@@ -14,8 +14,10 @@ class PhoneBook
 		void	search(void) const;
 
 	private:
-		int		_iContact;
+		int		_nbContact;
 		Contact	_book[8];
+		void	_showContactList(void) const;
+		void	_printFormated(std::string info) const;
 };
 
 #endif

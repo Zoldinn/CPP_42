@@ -11,6 +11,8 @@ class Contact
 
 		void		setContact(void);
 		std::string	getInfo(std::string info) const;
+		bool		isCreated;
+		void		printInfo(void) const;
 
 	private:
 		std::string	_firstName;
