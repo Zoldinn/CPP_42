@@ -13,21 +13,22 @@ Contact::~Contact(void)
 
 void	Contact::setContact(void)
 {
-	std::cout << ">First name : ";
+	std::cout << ">First name \t: ";
 	std::cin >> this->_firstName;
 
-	std::cout << ">Last name : ";
+	std::cout << ">Last name \t: ";
 	std::cin >> this->_lastName;
 
-	std::cout << ">Nickname : ";
+	std::cout << ">Nickname \t: ";
 	std::cin >> this->_nickname;
 
-	std::cout << ">Phone number : ";
+	std::cout << ">Phone number \t: ";
 	std::cin >> this->_phoneNumber;
 
-	std::cout << ">Darkest secret : ";
+	std::cout << ">Darkest secret\t: ";
 	std::cin >> this->_darkestSecret;
 
+	std::cout << "Contact added !" << std::endl << std::endl;
 	this->isCreated = true;
 }
 
@@ -50,12 +51,12 @@ void	Contact::printInfo() const
 {
 	if (this->isCreated == false)
 	{
-		std::cout << "No informations" << std::endl;
+		std::cout << std::endl << "No informations" << std::endl;
 		return ;
 	}
-	std::cout << "First name | \t" << this->_firstName << std::endl;
-	std::cout << "Last name | \t" << this->_lastName << std::endl;
-	std::cout << "Nickname | \t" << this->_nickname << std::endl;
-	std::cout << "Phone number | \t" << this->_phoneNumber << std::endl;
-	std::cout << "Darkest Secret | \t" << this->_darkestSecret << std::endl;
+	std::cout << "First name \t| " << this->_firstName << std::endl;
+	std::cout << "Last name \t| " << this->_lastName << std::endl;
+	std::cout << "Nickname \t| " << this->_nickname << std::endl;
+	std::cout << "Phone number \t| " << this->_phoneNumber << std::endl;
+	std::cout << "Darkest Secret\t| " << this->_darkestSecret << std::endl << std::endl;
 }
