@@ -42,18 +42,13 @@ void	PhoneBook::_showContactList(void) const
 		this->_printFormated("Nickname");
 		std::cout << std::endl;
 	}
-	for (int i = 0; i < this->_nbContact; i++)
+	for (int i = 0; i < 8 && _book[i].isCreated == true; i++)
 	{
-		if (this->_book[i].isCreated == true)
-		{
-			std::cout << std::right << std::setw(10) << i + 1 << "|";
-			this->_printFormated(this->_book[i].getInfo("first_name"));
-			this->_printFormated(this->_book[i].getInfo("last_name"));
-			this->_printFormated(this->_book[i].getInfo("nickname"));
-			std::cout << std::endl;
-		}
-		else
-			break;
+		std::cout << std::right << std::setw(10) << i + 1 << "|";
+		this->_printFormated(this->_book[i].getInfo("first_name"));
+		this->_printFormated(this->_book[i].getInfo("last_name"));
+		this->_printFormated(this->_book[i].getInfo("nickname"));
+		std::cout << std::endl;
 	}
 }
 
@@ -78,9 +73,11 @@ void	PhoneBook::search(void) const
 			index = who[0] - '0' - 1;
 			if (index >= 0 && index < 8 && this->_book[index].isCreated == true)
 				this->_book[index].printInfo();
+			else
+				std::cout << "Wrong index" << std::endl;
 		}
 		else
-			std::cout << std::endl << "Wrong index" << std::endl;
+			std::cout << "Wrong index" << std::endl;
 	}
 	else
 		std::cout << std::endl << "There's no contact" << std::endl;
