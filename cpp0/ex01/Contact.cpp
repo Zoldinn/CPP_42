@@ -1,6 +1,10 @@
 #include <iostream>
 #include "Contact.hpp"
 
+/**========================================================================
+ *                           Constructor/Destructor
+ *========================================================================**/
+
 Contact::Contact(void) : isCreated(false)
 {
 	return;
@@ -10,6 +14,8 @@ Contact::~Contact(void)
 {
 	return;
 }
+
+/*==============================================================*/
 
 void	Contact::setContact(void)
 {
@@ -32,6 +38,8 @@ void	Contact::setContact(void)
 	this->isCreated = true;
 }
 
+/*==============================================================*/
+
 std::string	Contact::getInfo(std::string info) const
 {
 	if (info == "first_name" && this->isCreated == true)
@@ -46,6 +54,8 @@ std::string	Contact::getInfo(std::string info) const
 		return (this->_darkestSecret);
 	return ("");
 }
+
+/*==============================================================*/
 
 void	Contact::printInfo() const
 {

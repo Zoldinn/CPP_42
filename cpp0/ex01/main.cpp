@@ -6,10 +6,12 @@ int	main(void)
 	PhoneBook	book;
 	std::string	order;
 
-	std::cout << "You can :" << std::endl;
-	std::cout << "'ADD' a new contact to the phone book" << std::endl;
-	std::cout << "'SEARCH' a contact in the phone book" << std::endl;
-	std::cout << "'EXIT' the Phonebook" << std::endl;
+	std::cout << "=============================================" << std::endl;
+	std::cout << ">You can :" << std::endl;
+	std::cout << "  - ADD    a new contact to the phone book" << std::endl;
+	std::cout << "  - SEARCH a contact in the phone book" << std::endl;
+	std::cout << "  - EXIT   the Phonebook" << std::endl;
+	std::cout << "=============================================" << std::endl << std::endl;
 
 	while (1)
 	{

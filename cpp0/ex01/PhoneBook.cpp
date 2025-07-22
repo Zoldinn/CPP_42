@@ -3,7 +3,7 @@
 #include "PhoneBook.hpp"
 
 /**========================================================================
- *!                           Constructor/Destructor
+ *                           Constructor/Destructor
  *========================================================================**/
 
 PhoneBook::PhoneBook(void) : _nbContact(0)
@@ -19,7 +19,7 @@ PhoneBook::~PhoneBook(void)
 }
 
 /**========================================================================
- *!                           Utils
+ *                           Utils
  *========================================================================**/
 
 void	PhoneBook::_printFormated(std::string info) const
@@ -53,7 +53,7 @@ void	PhoneBook::_showContactList(void) const
 }
 
 /**========================================================================
- *!                           Mandatory functions
+ *                           Mandatory functions
  *========================================================================**/
 
 void	PhoneBook::search(void) const
