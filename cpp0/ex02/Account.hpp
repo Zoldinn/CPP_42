@@ -23,14 +23,14 @@ public:
 
 	typedef Account		t;
 
-	static int	getNbAccounts( void );
-	static int	getTotalAmount( void );
-	static int	getNbDeposits( void );
-	static int	getNbWithdrawals( void );
-	static void	displayAccountsInfos( void );
+	static int	getNbAccounts( void ); // done
+	static int	getTotalAmount( void ); // done
+	static int	getNbDeposits( void ); // done
+	static int	getNbWithdrawals( void ); // done
+	static void	displayAccountsInfos( void ); // done
 
-	Account( int initial_deposit );
-	~Account( void );
+	Account( int initial_deposit ); // done
+	~Account( void ); // done
 
 	void	makeDeposit( int deposit );
 	bool	makeWithdrawal( int withdrawal );
