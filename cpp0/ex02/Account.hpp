@@ -32,8 +32,8 @@ public:
 	Account( int initial_deposit ); // done
 	~Account( void ); // done
 
-	void	makeDeposit( int deposit );
-	bool	makeWithdrawal( int withdrawal );
+	void	makeDeposit( int deposit ); // done
+	bool	makeWithdrawal( int withdrawal ); // done
 	int		checkAmount( void ) const;
 	void	displayStatus( void ) const;
 
@@ -45,7 +45,7 @@ private:
 	static int	_totalNbDeposits;
 	static int	_totalNbWithdrawals;
 
-	static void	_displayTimestamp( void );
+	static void	_displayTimestamp( void ); // done
 
 	int				_accountIndex;
 	int				_amount;
