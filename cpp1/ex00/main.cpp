@@ -9,7 +9,7 @@ int	main( void )
 	Zombie*	zombie = newZombie("Belzebub");
 	zombie->announce();
 	//* Then have to be destroy 
-	zombie->~Zombie();
+	delete zombie;
 
 	return 0;
 }
