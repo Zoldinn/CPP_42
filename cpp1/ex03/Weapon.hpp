@@ -3,10 +3,11 @@
 
 #include <iostream>
 
-class Weapon 
+class Weapon
 {
 	public:
 		Weapon( void );
+		Weapon( std::string weapon );
 		~Weapon( void );
 
 		const std::string&	getType( void ) const;
@@ -14,6 +15,6 @@ class Weapon
 
 	private:
 		std::string	_type;
-}
+};
 
 #endif
