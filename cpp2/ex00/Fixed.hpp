@@ -7,8 +7,16 @@
  {
 	public:
 		Fixed( void );
-		// Fixed( toCpy );
+		Fixed( Fixed const & cpy);
 		~Fixed( void );
- }
+		Fixed& operator=(Fixed const & other);
+
+		int		getRawBits( void ) const;
+		void	setRawBits( int const raw );
+
+	private:
+		int					_fixed;
+		static const int	_bits;
+ };
 
 #endif
