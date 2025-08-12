@@ -21,11 +21,11 @@ $(OBJ_DIR):
 
 clean:
 	@rm -rf $(OBJ_DIR)
-	@printf "\e[33m$(OBJ_DIR)/ \t\tdeleted.\e[0m\n"
+	@printf "\e[33m$(OBJ_DIR)/ deleted.\e[0m\n"
 
 fclean: clean
 	@rm -f $(NAME)
-	@printf "\e[33m$(NAME) \tdeleted.\e[0m\n"
+	@printf "\e[33m$(NAME) deleted.\e[0m\n"
 
 re: fclean all
 
