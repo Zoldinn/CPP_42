@@ -12,33 +12,33 @@
 		Fixed( Fixed const & cpy );
 		~Fixed( void );
 
-		Fixed&				operator=( Fixed const & other );
+		Fixed&						operator=( Fixed const & other );
 
-		bool				operator>( Fixed const & other ) const;
-		bool				operator<( Fixed const & other ) const;
-		bool				operator>=( Fixed const & other ) const;
-		bool				operator<=( Fixed const & other ) const;
-		bool				operator==( Fixed const & other ) const;
-		bool				operator!=( Fixed const & other ) const;
+		bool						operator>( Fixed const & other ) const;
+		bool						operator<( Fixed const & other ) const;
+		bool						operator>=( Fixed const & other ) const;
+		bool						operator<=( Fixed const & other ) const;
+		bool						operator==( Fixed const & other ) const;
+		bool						operator!=( Fixed const & other ) const;
 
-		Fixed				operator+( Fixed const & other ) const;
-		Fixed				operator-( Fixed const & other ) const;
-		Fixed				operator*( Fixed const & other ) const;
-		Fixed				operator/( Fixed const & other ) const;
+		Fixed						operator+( Fixed const & other ) const;
+		Fixed						operator-( Fixed const & other ) const;
+		Fixed						operator*( Fixed const & other ) const;
+		Fixed						operator/( Fixed const & other ) const;
 
-		Fixed&				operator++( void );	// prefix
-		Fixed&				operator--( void );	// prefix
-		Fixed 				operator++( int );	// postfix
-		Fixed 				operator--( int );	// postfix
+		Fixed&						operator++( void );	// prefix
+		Fixed&						operator--( void );	// prefix
+		Fixed 						operator++( int );	// postfix
+		Fixed 						operator--( int );	// postfix
 
-		int					getRawBits( void ) const;
-		void				setRawBits( int const raw );
-		float				toFloat( void ) const;
-		int					toInt( void ) const;
-		static int			min( Fixed& a, Fixed& b );
-		static int			max( Fixed& a, Fixed& b );
-		static int			min( Fixed const & a, Fixed const & b );
-		static int			max( Fixed const & a, Fixed const & b );
+		int							getRawBits( void ) const;
+		void						setRawBits( int const raw );
+		float						toFloat( void ) const;
+		int							toInt( void ) const;
+		static Fixed&				min( Fixed& a, Fixed& b );
+		static Fixed&				max( Fixed& a, Fixed& b );
+		static Fixed const &		min( Fixed const & a, Fixed const & b );
+		static Fixed const &		max( Fixed const & a, Fixed const & b );
 
 	private:
 		int					_fixed;
