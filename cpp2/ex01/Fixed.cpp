@@ -4,7 +4,7 @@
 const int	Fixed::_bits = 8;
 
 /**========================================================================
- *                   Constructors/Destructor
+ *                   Constructors/Destructor/Operator overload
  *========================================================================**/
 
 Fixed::Fixed( void ) : _fixed(0)									//! Default
@@ -35,17 +35,7 @@ Fixed::~Fixed( void )												//! Destructor
 	std::cout << "Destructor called" << std::endl;
 }
 
-/**========================================================================
- *                           Overloaded operators
- *========================================================================**/
-
-std::ostream& operator<<( std::ostream& os, Fixed const & toOutput )	//! <<
-{
-	os << toOutput.toFloat();
-	return os;
-}
-
-Fixed&	Fixed::operator=( Fixed const & other )						//! =
+Fixed&	Fixed::operator=(Fixed const & other)						//! =
 {
 	std::cout << "Copy assignement operator called" << std::endl;
 	if (this != &other)
@@ -53,68 +43,10 @@ Fixed&	Fixed::operator=( Fixed const & other )						//! =
 	return *this;
 }
 
-/**======================
- *    Arithmetics
- *========================**/
-
-Fixed Fixed::operator+( Fixed const & other ) const
+std::ostream& operator<<(std::ostream& os, Fixed const & toOutput )	//! <<
 {
-	return Fixed(this->getRawBits() + other.getRawBits());
-}
-
-Fixed Fixed::operator-( Fixed const & other ) const
-{
-	return Fixed(this->getRawBits() - other.getRawBits());
-}
-
-Fixed Fixed::operator*( Fixed const & other ) const
-{
-	return Fixed(this->getRawBits() * other.getRawBits());
-}
-
-Fixed Fixed::operator/( Fixed const & other ) const
-{
-	return Fixed(this->getRawBits() / other.getRawBits());
-}
-
-/**======================
- *    Incrementor/Decrementor
- *========================**/
-
-
-
-/**======================
- *    Comparators
- *========================**/
-
-bool	Fixed::operator>(Fixed const & other) const
-{
-	return this->getRawBits() > other.getRawBits() ? 1 : 0;
-}
-
-bool	Fixed::operator<(Fixed const & other) const
-{
-	return this->getRawBits() < other.getRawBits() ? 1 : 0;
-}
-
-bool	Fixed::operator>=(Fixed const & other) const
-{
-	return this->getRawBits() >= other.getRawBits() ? 1 : 0;
-}
-
-bool	Fixed::operator<=(Fixed const & other) const
-{
-	return this->getRawBits() <= other.getRawBits() ? 1 : 0;
-}
-
-bool	Fixed::operator==(Fixed const & other) const
-{
-	return this->getRawBits() == other.getRawBits() ? 1 : 0;
-}
-
-bool	Fixed::operator!=(Fixed const & other) const
-{
-	return this->getRawBits() != other.getRawBits() ? 1 : 0;
+	os << toOutput.toFloat();
+	return os;
 }
 
 /**========================================================================

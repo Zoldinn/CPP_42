@@ -11,25 +11,7 @@
 		Fixed( const float x );
 		Fixed( Fixed const & cpy);
 		~Fixed( void );
-
-		Fixed& operator=( Fixed const & other );
-
-		bool operator>( Fixed const & other ) const;
-		bool operator<( Fixed const & other ) const;
-		bool operator>=( Fixed const & other ) const;
-		bool operator<=( Fixed const & other ) const;
-		bool operator==( Fixed const & other ) const;
-		bool operator!=( Fixed const & other ) const;
-
-		Fixed operator+( Fixed const & other ) const;
-		Fixed operator-( Fixed const & other ) const;
-		Fixed operator*( Fixed const & other ) const;
-		Fixed operator/( Fixed const & other ) const;
-
-		Fixed& operator++( void );	// prefix
-		Fixed& operator--( void );	// prefix
-		Fixed& operator++( int );	// postfix
-		Fixed& operator--( int );	// postfix
+		Fixed& operator=(Fixed const & other);
 
 		int		getRawBits( void ) const;
 		void	setRawBits( int const raw );
@@ -41,6 +23,6 @@
 		static const int	_bits;
  };
 
- std::ostream& operator<<( std::ostream& os, Fixed const & toOutput );
+ std::ostream& operator<<(std::ostream& os, Fixed const & toOutput );
 
 #endif
