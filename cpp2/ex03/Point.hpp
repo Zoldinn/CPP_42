@@ -14,11 +14,13 @@
 
 		Point&	operator=( Point const & right );
 
-		bool	bsp( Point const a, Point const b, Point const c, Point const point);
+		Fixed	get( char const what ) const;
 
 	private:
 		Fixed const	_x;
 		Fixed const	_y;
  };
+
+bool	bsp( Point const a, Point const b, Point const c, Point const point);
 
 #endif
