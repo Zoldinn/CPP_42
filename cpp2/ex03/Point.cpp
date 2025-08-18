@@ -15,11 +15,6 @@ Point::Point( float const x, float const y ) : _x(x), _y(y) {};
 
 Point&	Point::operator=( Point const & right ) 
 {
-	// if (this != &right)
-	// {
-	// 	this->_x = right._x;
-	// 	this->_y = right._y;
-	// }
 	(void) right;
 	return *this;
 }
