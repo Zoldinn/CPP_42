@@ -34,74 +34,57 @@ ClapTrap&		ClapTrap::operator=( ClapTrap const & other )
 	return *this;
 }
 
-std::ostream&	operator<<( std::ostream& os, ClapTrap const & obj )
-{
-	os << "Name    : " << obj.getName() << std::endl;
-	os << "Health  : " << obj.getHealth() << std::endl;
-	os << "Stamina : " << obj.getStamina() << std::endl;
-	os << "Damage  : " << obj.getDamage() << std::endl;
-	return os;
-}
-
-/**========================================================================
- **                               Getters
- *========================================================================**/
-
-std::string		ClapTrap::getName( void ) const
-{
-	return this->_name;
-}
-
-unsigned int	ClapTrap::getHealth( void ) const
-{
-	return this->_health;
-}
-
-unsigned int	ClapTrap::getStamina( void ) const
-{
-	return this->_stamina;
-}
-
-int const		ClapTrap::getDamage( void ) const
-{
-	return this->_damage;
-}
-
-/**========================================================================
- **                                Setters
- *========================================================================**/
-
-void			ClapTrap::setHealth( unsigned int newAmount )
-{
-	this->_health = newAmount;
-}
-
-void			ClapTrap::setStamina( unsigned int newAmount )
-{
-	this->_stamina = newAmount;
-}
-
 /**========================================================================
  **                           Actiiooooonnnn !
  *========================================================================**/
 
 void			ClapTrap::attack( const std::string& target )
 {
-	std::cout << "ClapTrap " << this->getName() << " attacks " << target
-		<< ", causing " << this->getDamage() << " points of damage !" 
+	if (this->_stamina <= 0)
+	{
+		std::cout << "You're out of stamina !" << std::endl;
+		return ;
+	}
+	if (this->_health <= 0)
+	{
+		std::cout << "You died ! How could you do ?" << std::endl;
+		return ;
+	}
+	std::cout << this->_name << " attacks " << target
+		<< ", causing " << this->_damage << " points of damage !" 
 		<< std::endl;
+	this->_stamina -= 1;
 }
 
 void			ClapTrap::takeDamage( unsigned int amount )
 {
-	std::cout << "ClapTrap " << this->getName() << " Received " << amount
+	std::cout << this->_name << " Received " << amount
 		<< " points of damage !" << std::endl;
-	
+	this->_health -= amount;
 }
 
 void			ClapTrap::beRepaired( unsigned int amount )
 {
-	std::cout << "ClapTrap " << this->getName() << " get repaired " << amount
-		<< ", causing " << this->getDamage() << " points of damage !" 
-		<< std::endl;
+	if (this->_stamina <= 0)
+	{
+		std::cout << "You're out of stamina !" << std::endl;
+		return ;
+	}
+	if (this->_health <= 0)
+	{
+		std::cout << "You died ! How could you do ?" << std::endl;
+		return ;
+	}
+	std::cout << this->_name << " get repaired " << amount << "!" << std::endl;
+	this->_health += 1;
+	this->_stamina -= 1;
+}
+
+/**========================================================================
+ **                               Utils
+ *========================================================================**/
+
+unsigned int	ClapTrap::getHP( void )
+{
+	return this->_health;
 }

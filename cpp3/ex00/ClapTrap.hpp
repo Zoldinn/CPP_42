@@ -16,12 +16,7 @@
 		void			takeDamage( unsigned int amount );
 		void			beRepaired( unsigned int amount );
 
-		std::string		getName( void ) const;
-		unsigned int	getHealth( void ) const;
-		unsigned int	getStamina( void ) const;
-		int const		getDamage( void ) const;
-		void			setHealth( unsigned int newAmount );
-		void			setStamina( unsigned int newAmount );
+		unsigned int	getHP( void );
 
 	private:
 		std::string const	_name;
@@ -29,7 +24,5 @@
 		unsigned int		_stamina;
 		unsigned int const	_damage;
  };
-
- std::ostream&	operator<<( std::ostream& os, ClapTrap const & obj );
 
 #endif
