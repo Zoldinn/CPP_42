@@ -8,7 +8,7 @@ int	main( void )
 	user.takeDamage(1);
 	user.beRepaired(1);
 
-	std::cout << "The mosquito gang attack !" << std::endl;
+	std::cout << "The mosquitos gang attack !" << std::endl;
 
 	while (user.getHP() > 0)
 		user.takeDamage(1);

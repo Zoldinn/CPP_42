@@ -1,0 +1,45 @@
+#include "ScavTrap.hpp"
+
+/**========================================================================
+ **                        Constructors/Destructor
+ *========================================================================**/
+
+ScavTrap::ScavTrap( std::string const name ) : ClapTrap(name)
+{
+	this->_damage = 20;
+	this->_stamina = 50;
+	this->_health = 100;
+	std::cout << "ScavTrap CONSTRUCTOR called" << std::endl;
+}
+
+ScavTrap::ScavTrap( ScavTrap const & cpy )
+{
+	std::cout << "ScavTrap COPY constructor called" << std::endl;
+	*this = cpy;
+}
+
+ScavTrap::~ScavTrap( void )
+{
+	std::cout << "ScavTrap DESTRUCTOR called" << std::endl;
+}
+
+/**========================================================================
+ **                             OVERLOADERS
+ *========================================================================**/
+
+ScavTrap&		ScavTrap::operator=( ScavTrap const & other )
+{
+	if (this != &other)
+		*this = other;
+	std::cout << "ScavTrap ASSIGNEMENT operator called" << std::endl;
+	return *this;
+}
+
+/**========================================================================
+ **                               Function
+ *========================================================================**/
+
+void			ScavTrap::guardGate( void )
+{
+	std::cout << "ScavTrap is now in Gate keeper mode !" << std::endl;
+}
