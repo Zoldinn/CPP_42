@@ -43,3 +43,21 @@ void			ScavTrap::guardGate( void )
 {
 	std::cout << "ScavTrap is now in Gate keeper mode !" << std::endl;
 }
+
+void			ScavTrap::attack( const std::string& target )
+{
+	if (this->_stamina <= 0)
+	{
+		std::cout << "You're out of stamina !" << std::endl;
+		return ;
+	}
+	if (this->_health <= 0)
+	{
+		std::cout << "You died ! How could you do ?" << std::endl;
+		return ;
+	}
+	std::cout << this->_name << " attacks " << target
+		<< ", causing " << this->_damage << " points of damage !" 
+		<< std::endl;
+	this->_stamina -= 1;
+}

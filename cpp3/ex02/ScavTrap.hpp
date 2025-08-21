@@ -11,7 +11,8 @@
 		~ScavTrap( void );
 		ScavTrap&		operator=( ScavTrap const & other );
 
-		void	guardGate( void );
+		void			attack( const std::string& target );
+		void			guardGate( void );
 
 	private:
 

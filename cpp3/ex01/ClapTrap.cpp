@@ -59,7 +59,7 @@ void			ClapTrap::attack( const std::string& target )
 		std::cout << "You died ! How could you do ?" << std::endl;
 		return ;
 	}
-	std::cout << this->_name << " attacks " << target
+	std::cout << "ClapTrap" << this->_name << " attacks " << target
 		<< ", causing " << this->_damage << " points of damage !" 
 		<< std::endl;
 	this->_stamina -= 1;
