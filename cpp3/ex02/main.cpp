@@ -2,18 +2,18 @@
 
 int	main( void )
 {
-	FragTrap	user("BobR42");
+	FragTrap	user("Pulpito");
 
-	user.attack("mosquito");
+	user.attack("dogo");
 	user.takeDamage(20);
 	user.beRepaired(20);
 
-	std::cout << "The mosquitos gang attack !" << std::endl;
+	std::cout << "The dogos gang attack !" << std::endl;
 
 	while (user.getHP() > 1)
 		user.takeDamage(20);
 
-	std::cout << "You have 1 last HP, heal and go to gard mode !" << std::endl;
+	std::cout << "You have 1 last HP, try a high five to make peace !" << std::endl;
 
 	user.beRepaired(99);
 
