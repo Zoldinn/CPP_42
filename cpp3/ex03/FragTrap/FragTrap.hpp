@@ -6,7 +6,6 @@
  class FragTrap : public virtual ClapTrap
  {
 	public:
-		FragTrap( void );
 		FragTrap( std::string const name );
 		FragTrap( FragTrap const & cpy );
 		~FragTrap( void );
@@ -14,6 +13,9 @@
 		FragTrap&		operator=( FragTrap const & other );
 
 		void			highFivesGuys(void);
+
+	protected:
+		FragTrap( void );
  };
 
 #endif

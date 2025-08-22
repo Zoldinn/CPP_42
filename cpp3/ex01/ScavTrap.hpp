@@ -15,6 +15,7 @@
 		void			guardGate( void );
 
 	private:
+		ScavTrap( void );
 
  };
  

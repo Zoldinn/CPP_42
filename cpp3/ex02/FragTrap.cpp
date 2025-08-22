@@ -4,6 +4,14 @@
  **                        Constructors/Destructor
  *========================================================================**/
 
+FragTrap::FragTrap( void ) : ClapTrap("")
+{
+	this->_damage = 30;
+	this->_stamina = 100;
+	this->_health = 100;
+	std::cout << "FragTrap CONSTRUCTOR called" << std::endl;
+}
+
 FragTrap::FragTrap( std::string const name ) : ClapTrap(name)
 {
 	this->_damage = 30;

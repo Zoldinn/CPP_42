@@ -7,7 +7,6 @@
  class DiamondTrap : public ScavTrap, FragTrap
  {
 	public:
-		DiamondTrap( void );
 		DiamondTrap( std::string const & name );
 		DiamondTrap( DiamondTrap const & other );
 		~DiamondTrap( void );
@@ -17,6 +16,7 @@
 		using		ScavTrap::attack;
  
 	private:
+		DiamondTrap( void );
 		std::string	_name;
 		using		FragTrap::_health;
 		using		ScavTrap::_stamina;

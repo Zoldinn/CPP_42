@@ -4,6 +4,14 @@
  **                        Constructors/Destructor
  *========================================================================**/
 
+ScavTrap::ScavTrap( void ) : ClapTrap("")
+{
+	this->_damage = 20;
+	this->_stamina = 50;
+	this->_health = 100;
+	std::cout << "ScavTrap CONSTRUCTOR called" << std::endl;
+}
+
 ScavTrap::ScavTrap( std::string const name ) : ClapTrap(name)
 {
 	this->_damage = 20;

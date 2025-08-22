@@ -65,23 +65,23 @@ void			ClapTrap::attack( const std::string& target )
 	this->_stamina -= 1;
 }
 
-void			ClapTrap::takeDamage( unsigned int amount )
+void			ClapTrap::takeDamage( int amount )
 {
 	std::cout << this->_name << " Received " << amount
 		<< " points of damage !" << std::endl;
 	this->_health -= amount;
 }
 
-void			ClapTrap::beRepaired( unsigned int amount )
+void			ClapTrap::beRepaired( int amount )
 {
-	if (this->_stamina <= 0)
-	{
-		std::cout << "You're out of stamina !" << std::endl;
-		return ;
-	}
 	if (this->_health <= 0)
 	{
 		std::cout << "You died ! How could you do ?" << std::endl;
+		return ;
+	}
+	if (this->_stamina <= 0)
+	{
+		std::cout << "You're out of stamina !" << std::endl;
 		return ;
 	}
 	std::cout << this->_name << " get repaired " << amount << "!" << std::endl;
@@ -93,7 +93,7 @@ void			ClapTrap::beRepaired( unsigned int amount )
  **                               Utils
  *========================================================================**/
 
-unsigned int	ClapTrap::getHP( void )
+int	ClapTrap::getHP( void )
 {
 	return this->_health;
 }

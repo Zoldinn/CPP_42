@@ -13,6 +13,8 @@
 		FragTrap&		operator=( FragTrap const & other );
 
 		void			highFivesGuys(void);
+	protected:
+		FragTrap( void );
  };
 
 #endif
