@@ -1,4 +1,4 @@
-#include "Animal.hpp"
+#include "../headers/Animal.hpp"
 
 /**========================================================================
  *                      Constructors, destructor, overloads
@@ -18,7 +18,7 @@ Animal::Animal( Animal const & other )
 
 Animal::~Animal( void )
 {
-	std::cout << "Animal\t destroyed" << std::endl;
+	std::cout << "Animal\t\t destroyed" << std::endl;
 }
 
 Animal& Animal::operator=( Animal const & other )

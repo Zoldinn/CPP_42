@@ -1,10 +1,16 @@
 NAME = Animal
-FLAGS = -Wall -Wextra -Werror -std=c++98 -g
+FLAGS = -Wall -Wextra -Werror -std=c++98 -g -Iheaders
 CC = c++
 
 OBJ_DIR = obj
 
-SRC = main.cpp Dog.cpp Cat.cpp Animal.cpp
+SRC = main.cpp \
+	srcs/Dog.cpp \
+	srcs/Cat.cpp \
+	srcs/Animal.cpp \
+	srcs/WrongAnimal.cpp \
+	srcs/WrongCat.cpp
+
 OBJ = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
 all: $(NAME)

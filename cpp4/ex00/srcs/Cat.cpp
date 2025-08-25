@@ -1,4 +1,4 @@
-#include "Cat.hpp"
+#include "../headers/Cat.hpp"
 
 /**========================================================================
  *                      Constructors, destructor, overloads
@@ -18,7 +18,7 @@ Cat::Cat( Cat const & other )
 
 Cat::~Cat( void )
 {
-	std::cout << "Cat\t destroyed" << std::endl;
+	std::cout << "Cat\t\t destroyed" << std::endl;
 }
 
 Cat& Cat::operator=( Cat const & other )
