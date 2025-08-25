@@ -1,27 +1,36 @@
 #include "Cat.hpp"
 
+/**========================================================================
+ *                      Constructors, destructor, overloads
+ *========================================================================**/
+
 Cat::Cat( void )
 {
-	std::cout << "Cat default constructor" << std::endl;
+	this->_type = "Cat";
+	std::cout << "Cat\t default constructor" << std::endl;
 }
 
 Cat::Cat( Cat const & other )
 {
-	*this = other;
-	std::cout << "Cat copy constructor" << std::endl;
+	this->_type = other._type;
+	std::cout << "Cat\t copy constructor" << std::endl;
 }
 
 Cat::~Cat( void )
 {
-	std::cout << "Cat destroyed" << std::endl;
-
+	std::cout << "Cat\t destroyed" << std::endl;
 }
 
-Cat & Cat::operator=( Cat const & other )
+Cat& Cat::operator=( Cat const & other )
 {
 	if (this != &other)
-	{
-		// copy attributes
-	}
+		this->_type = other._type;
 	return *this;
+}
+
+/*=========================================================================*/
+
+void	Cat::makeSound( void ) const
+{
+	std::cout << "*** Miaou ! ***" << std::endl;
 }

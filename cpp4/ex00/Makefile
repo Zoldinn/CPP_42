@@ -4,7 +4,7 @@ CC = c++
 
 OBJ_DIR = obj
 
-SRC = main.cpp Dog.cpp Cat.cpp
+SRC = main.cpp Dog.cpp Cat.cpp Animal.cpp
 OBJ = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
 all: $(NAME)

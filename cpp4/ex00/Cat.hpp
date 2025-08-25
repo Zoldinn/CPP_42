@@ -2,17 +2,17 @@
  #define CAT_HPP
 
  #include <iostream>
+ #include "Animal.hpp"
  
- class Cat
+ class Cat : public Animal
  {
 	public:
 		Cat( void );
 		Cat( Cat const & other );
 		~Cat( void );
-		Cat &operator=( Cat const & other );
+		Cat&	operator=( Cat const & other );
  
-	private:
-		// attributes
+		void	makeSound( void ) const;
  };
  
 #endif

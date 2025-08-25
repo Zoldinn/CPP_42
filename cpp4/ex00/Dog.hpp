@@ -2,8 +2,9 @@
  #define DOG_HPP
 
  #include <iostream>
+ #include "Animal.hpp"
  
- class Dog
+ class Dog : public Animal
  {
 	public:
 		Dog( void );
@@ -11,8 +12,7 @@
 		~Dog( void );
 		Dog &operator=( Dog const & other );
  
-	private:
-		// attributes
+		void	makeSound( void ) const;
  };
  
 #endif
