@@ -20,7 +20,7 @@ ClapTrap::ClapTrap( std::string const name ) : _name(name)
 	std::cout << "ClapTrap CONSTRUCTOR called" << std::endl;
 }
 
-ClapTrap::ClapTrap( ClapTrap const & cpy ) : _damage(0)
+ClapTrap::ClapTrap( ClapTrap const & cpy )
 {
 	std::cout << "ClapTrap COPY constructor called" << std::endl;
 	*this = cpy;

@@ -20,7 +20,7 @@ ScavTrap::ScavTrap( std::string const name ) : ClapTrap(name)
 	std::cout << "ScavTrap CONSTRUCTOR called" << std::endl;
 }
 
-ScavTrap::ScavTrap( ScavTrap const & cpy )
+ScavTrap::ScavTrap( ScavTrap const & cpy )  : ClapTrap(cpy._name)
 {
 	std::cout << "ScavTrap COPY constructor called" << std::endl;
 	*this = cpy;

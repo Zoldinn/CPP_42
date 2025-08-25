@@ -16,7 +16,7 @@ DiamondTrap::DiamondTrap( std::string const & name )
 	ClapTrap::_name = _name + "_clap_name";
 }
 
-DiamondTrap::DiamondTrap( DiamondTrap const & other )
+DiamondTrap::DiamondTrap( DiamondTrap const & other )  : ClapTrap(other._name), ScavTrap(other._name), FragTrap(other._name)
 {
 	*this = other;
 }
