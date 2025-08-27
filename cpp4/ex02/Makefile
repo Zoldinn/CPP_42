@@ -1,4 +1,4 @@
-NAME = Brain
+NAME = AAnimal
 FLAGS = -Wall -Wextra -Werror -std=c++98 -g -Iheaders
 CC = c++
 
@@ -7,7 +7,7 @@ OBJ_DIR = obj
 SRC = main.cpp \
 	srcs/Dog.cpp \
 	srcs/Cat.cpp \
-	srcs/Animal.cpp \
+	srcs/AAnimal.cpp \
 	srcs/Brain.cpp
 
 OBJ = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC))
