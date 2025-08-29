@@ -3,15 +3,16 @@
 /**========================================================================
  *                    Constructors, destructor, overloads
  *========================================================================**/
-Bureaucrat::Bureaucrat() {};
-Bureaucrat::Bureaucrat(std::string name) : _name(name), _grade(150) {};
-Bureaucrat::Bureaucrat(const Bureaucrat& other) : _name(other._name) {this->_grade = other._grade;}
-Bureaucrat::~Bureaucrat() {};
+Bureaucrat::Bureaucrat( void ) : _name("..."), _grade(150) {};
+Bureaucrat::Bureaucrat( std::string name ) : _name(name), _grade(150) {};
+Bureaucrat::Bureaucrat( std::string name, int grade ) : _name(name), _grade(grade) {};
+Bureaucrat::Bureaucrat( const Bureaucrat& other ) : _name(other._name) {this->_grade = other._grade;}
+Bureaucrat::~Bureaucrat( void ) {};
 
-Bureaucrat&			Bureaucrat::operator=(const Bureaucrat& other) {return *this;};
-std::ostream&		operator<<(std::ostream os, const Bureaucrat& toPrint)
+Bureaucrat&			Bureaucrat::operator=( const Bureaucrat& other ) {(void)other;return *this;};
+std::ostream&		operator<<( std::ostream& os, const Bureaucrat& toPrint )
 {
-	os << toPrint.getName() << ", bureaucrat grade " << toPrint.getGrade() << "." << std::endl;
+	os << toPrint.getName() << ", bureaucrat grade " << toPrint.getGrade() << ".";
 	return os;
 }
 
@@ -19,8 +20,43 @@ std::ostream&		operator<<(std::ostream os, const Bureaucrat& toPrint)
  *                           Getters, setters
  *========================================================================**/
 
-int					Bureaucrat::getGrade() const {return this->_grade;};
-const std::string&	Bureaucrat::getName() const {return this->_name;};
-void				Bureaucrat::upperGrade() {this->_grade++;};
-void				Bureaucrat::lowerGrade() {this->_grade--;};
-void				Bureaucrat::setGrade(const int& grade) {this->_grade = grade;};
+int					Bureaucrat::getGrade( void ) const {return this->_grade;};
+const std::string&	Bureaucrat::getName( void ) const {return this->_name;};
+
+void				Bureaucrat::upperGrade( void ) // Go to 1
+{
+	if (this->_grade - 1 < 1)
+		throw Bureaucrat::GradeTooHighException();
+	this->_grade--;
+	std::cout << this;
+}
+
+void				Bureaucrat::lowerGrade( void ) // Go to 150
+{
+	if (this->_grade + 1 > 150)
+		throw Bureaucrat::GradeTooLowException();
+	this->_grade++;
+}
+
+void				Bureaucrat::setGrade( int grade )
+{
+	if (grade < 1)
+		throw Bureaucrat::GradeTooHighException();
+	if (grade > 150)
+		throw Bureaucrat::GradeTooLowException();
+	this->_grade = grade;
+}
+
+/**========================================================================
+ *                              Exceptions
+ *========================================================================**/
+
+const char*			Bureaucrat::GradeTooHighException::what( void ) const throw()
+{
+	return "Grade too high ! It cannot be more than 1...";
+}
+
+const char*			Bureaucrat::GradeTooLowException::what( void ) const throw()
+{
+	return "Grade too low ! It cannot be less than 150...";
+}
