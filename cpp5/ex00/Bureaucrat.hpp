@@ -10,7 +10,6 @@
 		Bureaucrat( void );
 		Bureaucrat( std::string name );
 		Bureaucrat( std::string name, int grade );
-		Bureaucrat( std::string name, int grade, int exec );
 		Bureaucrat( const Bureaucrat& other );
 		~Bureaucrat( void );
 		Bureaucrat&	operator=( const Bureaucrat& other );
@@ -35,7 +34,6 @@
 	private:
 		const std::string	_name;
 		int					_grade;
-		int					_exec;
 
  };
 

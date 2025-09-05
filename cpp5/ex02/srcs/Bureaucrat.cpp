@@ -1,5 +1,6 @@
 #include "../headers/Bureaucrat.hpp"
 #include "../headers/AForm.hpp"
+#include "RobotomyRequestForm.hpp"
 
 /**========================================================================
  *                    Constructors, destructor, overloads
@@ -107,12 +108,7 @@ void				Bureaucrat::executeForm( AForm const & form ) const
 		form.execute(*this);
 		std::cout << this->_name << " executed " << form.getName() << std::endl;
 	}
-	catch (const RobotomyRequestForm::GradeTooHighException& e)
-	{
-		std::cout << this->_name << " " << e.what() << std::endl;
-		std::cout << "Robotomization failed..." << std::endl;
-	}
-	catch (const GradeTooHighException& e)
+	catch (const std::exception& e)
 	{
 		std::cout << this->_name << " " << e.what() << std::endl;
 	}

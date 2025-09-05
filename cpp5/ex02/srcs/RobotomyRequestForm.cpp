@@ -1,5 +1,6 @@
 #include "../headers/Bureaucrat.hpp"
 #include "../headers/RobotomyRequestForm.hpp"
+#include <cstdlib>
 
 RobotomyRequestForm::RobotomyRequestForm( void ) : AForm("RobotomyRequestForm", 72, 45)
 {
@@ -39,6 +40,8 @@ void	RobotomyRequestForm::execute( Bureaucrat const & executor ) const
 	if (this->getSign() == false)
 		throw FormNotSignException();
 	std::cout << "*** Drilling noises ***" << std::endl;
-	std::cout << this->_target << "have been robotomized successfully 50% of the time"
-		<< std::endl;
+	if (std::rand() % 2 == 0)
+		std::cout << this->_target << "have been robotomized successfully" << std::endl;
+	else
+		std::cout << this->_target << "have not been robotomized" << std::endl;
 }

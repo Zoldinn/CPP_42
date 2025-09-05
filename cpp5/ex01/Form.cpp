@@ -8,7 +8,13 @@
 Form::Form( void ) : _name("..."), _signLvl(1), _execLvl(1), _sign(false) {};
 
 Form::Form( std::string name, int signLvl, int execLvl ) : _name(name),
-	_signLvl(signLvl), _execLvl(execLvl), _sign(false) {};
+	_signLvl(signLvl), _execLvl(execLvl), _sign(false)
+{
+	if (this->_signLvl < 1 || this->_execLvl < 1)
+		throw GradeTooHighException();
+	if (this->_signLvl > 150 || this->_execLvl > 150)
+		throw GradeTooLowException();
+}
 
 Form::Form( const Form& cpy ) : _name(cpy._name),
 	_signLvl(cpy._signLvl), _execLvl(cpy._execLvl), _sign(cpy._sign) {};

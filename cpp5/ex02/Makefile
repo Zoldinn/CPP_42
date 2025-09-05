@@ -5,8 +5,11 @@ CC = c++
 OBJ_DIR = obj
 
 SRC = main.cpp \
-	Bureaucrat.cpp \
-	Form.cpp \
+	srcs/Bureaucrat.cpp \
+	srcs/AForm.cpp \
+	srcs/ShrubberyCreationForm.cpp \
+	srcs/RobotomyRequestForm.cpp \
+	srcs/PresidentialPardonForm.cpp
 
 OBJ = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
