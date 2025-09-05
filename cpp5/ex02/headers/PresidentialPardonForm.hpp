@@ -9,7 +9,7 @@
  {
 	public:
 		PresidentialPardonForm( void );
-		PresidentialPardonForm( std::string& target );
+		PresidentialPardonForm( std::string target );
 		PresidentialPardonForm( const PresidentialPardonForm& cpy );
 		~PresidentialPardonForm( void );
 		PresidentialPardonForm&	operator=( const PresidentialPardonForm& other );
@@ -17,10 +17,7 @@
 		void					execute( Bureaucrat const & executor ) const;
 		
 	private:
-		int						_signLvl;
-		int						_execLvl;
 		std::string				_target;
-		bool					_sign;
  };
 
 #endif

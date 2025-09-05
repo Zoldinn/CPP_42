@@ -1,21 +1,41 @@
 #include "headers/Bureaucrat.hpp"
-#include "headers/AForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 
 int	main( void )
 {
-	Bureaucrat	worker("Alan", 10);
-	AForm		Aform1("AForm1", 3, 3);
-	AForm		Aform2("AForm2", 15, 15);
 
-	std::cout << worker << std::endl << std::endl;
-	std::cout << Aform1 << std::endl << std::endl;
-	std::cout << Aform2 << std::endl << std::endl;
+	PresidentialPardonForm	pardonRequest("Toto");
+	RobotomyRequestForm		robotomyRequest("Bill");
+	ShrubberyCreationForm	homeShrub("home");
 
-	worker.signForm(Aform1); std::cout << std::endl;
-	worker.signForm(Aform2); std::cout << std::endl;
+	Bureaucrat	mid("Alan", 50);
+	Bureaucrat	chef("Boubou", 1);
+	Bureaucrat	slave("Slave", 150);
+	Bureaucrat	crashTest1("CrashTest1", -1);
+	Bureaucrat	crashTest2("CrashTest2", 200);
 
-	std::cout << Aform1 << std::endl << std::endl;
-	std::cout << Aform2 << std::endl << std::endl;
+	mid.executeForm(pardonRequest);
+	mid.executeForm(robotomyRequest);
+	mid.executeForm(homeShrub);
+
+		mid.executeForm(pardonRequest);
+	mid.executeForm(robotomyRequest);
+	mid.executeForm(homeShrub);
+
+		mid.executeForm(pardonRequest);
+	mid.executeForm(robotomyRequest);
+	mid.executeForm(homeShrub);
+
+		mid.executeForm(pardonRequest);
+	mid.executeForm(robotomyRequest);
+	mid.executeForm(homeShrub);
+
+		mid.executeForm(pardonRequest);
+	mid.executeForm(robotomyRequest);
+	mid.executeForm(homeShrub);
+
 
 	return 0;
 }

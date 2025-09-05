@@ -1,21 +1,15 @@
 #include "../headers/ShrubberyCreationForm.hpp"
 #include "../headers/Bureaucrat.hpp"
 
-ShrubberyCreationForm::ShrubberyCreationForm( void )
+ShrubberyCreationForm::ShrubberyCreationForm( void ) : AForm("ShrubberyCreationForm", 145, 137)
 {
-	this->_signLvl = 145;
-	this->_execLvl = 137;
 	this->_target = "target";
-	this->_sign = false;
 	std::cout << "ShrubberyCreationForm created" << std::endl;
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm( std::string& target )
+ShrubberyCreationForm::ShrubberyCreationForm( std::string target ) : AForm("ShrubberyCreationForm", 145, 137)
 {
-	this->_signLvl = 145;
-	this->_execLvl = 137;
 	this->_target = target;
-	this->_sign = false;
 	std::cout << "ShrubberyCreationForm created" << std::endl;
 }
 
@@ -33,8 +27,6 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=( const ShrubberyCreation
 {
 	if (this != &other)
 	{
-		this->_execLvl = other._execLvl;
-		this->_signLvl = other._signLvl;
 		this->_target = other._target;
 	}
 	return *this;
@@ -42,38 +34,27 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=( const ShrubberyCreation
 
 void	ShrubberyCreationForm::execute( Bureaucrat const & executor ) const
 {
-	try
-	{
-		if (this->_execLvl > executor.getGrade() || this->_signLvl > executor.getGrade())
-			throw AForm::GradeTooHighException();
-		if (this->_sign == false)
-			throw AForm::FormNotSignException();
+	if (this->getExecLvl() > executor.getGrade() || this->getSignLvl() > executor.getGrade())
+		throw GradeTooHighException();
+	if (this->getSign() == false)
+		throw FormNotSignException();
 
-		std::fstream	fs;
-		std::string		nameFile;
+	std::fstream	fs;
+	std::string		nameFile;
 
-		nameFile = this->_target + "_shrubbery";
-		fs.open(nameFile, std::fstream::out);
-		if (fs.is_open())
-		{
-			fs << "			_-_";
-			fs << "	/~~   ~~\\";
-			fs << "/~~         ~~\\";
-			fs << "{               }";
-			fs << "\\  _-     -_  /";
-			fs << "~  \\\\ //  ~";
-			fs << "_- -   | | _- _";
-			fs << "_ -  | |   -_";
-			fs << "	// \\\\";
-			fs.close();
-		}
-	}
-	catch (const AForm::GradeTooHighException& e)
+	nameFile = this->_target + "_shrubbery";
+	fs.open(nameFile, std::fstream::out);
+	if (fs.is_open())
 	{
-		std::cout << e.what() << std::endl;
-	}
-	catch (const AForm::FormNotSignException& e)
-	{
-		std::cout << e.what() << std::endl;
+		fs << "			_-_";
+		fs << "	/~~   ~~\\";
+		fs << "/~~         ~~\\";
+		fs << "{               }";
+		fs << "\\  _-     -_  /";
+		fs << "~  \\\\ //  ~";
+		fs << "_- -   | | _- _";
+		fs << "_ -  | |   -_";
+		fs << "	// \\\\";
+		fs.close();
 	}
 }

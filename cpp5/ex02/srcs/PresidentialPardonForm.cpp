@@ -1,21 +1,15 @@
 #include "../headers/PresidentialPardonForm.hpp"
 #include "../headers/Bureaucrat.hpp"
 
-PresidentialPardonForm::PresidentialPardonForm( void )
+PresidentialPardonForm::PresidentialPardonForm( void ) : AForm("PresidentialPardonForm", 25, 5)
 {
-	this->_signLvl = 25;
-	this->_execLvl = 5;
 	this->_target = "target";
-	this->_sign = false;
 	std::cout << "PresidentialPardonForm created" << std::endl;
 }
 
-PresidentialPardonForm::PresidentialPardonForm( std::string& target )
+PresidentialPardonForm::PresidentialPardonForm( std::string target ) : AForm("PresidentialPardonForm", 25, 5)
 {
-	this->_signLvl = 25;
-	this->_execLvl = 5;
 	this->_target = target;
-	this->_sign = false;
 	std::cout << "PresidentialPardonForm created" << std::endl;
 }
 
@@ -29,12 +23,10 @@ PresidentialPardonForm::~PresidentialPardonForm( void )
 	std::cout << "PresidentialPardonForm destroyed" << std::endl;
 }
 
-PresidentialPardonForm & PresidentialPardonForm::operator=( const PresidentialPardonForm& other )
+PresidentialPardonForm& PresidentialPardonForm::operator=( const PresidentialPardonForm& other )
 {
 	if (this != &other)
 	{
-		this->_execLvl = other._execLvl;
-		this->_signLvl = other._signLvl;
 		this->_target = other._target;
 	}
 	return *this;
@@ -42,21 +34,9 @@ PresidentialPardonForm & PresidentialPardonForm::operator=( const PresidentialPa
 
 void	PresidentialPardonForm::execute( Bureaucrat const & executor ) const
 {
-	try
-	{
-		if (this->_execLvl > executor.getGrade() || this->_signLvl > executor.getGrade())
-			throw AForm::GradeTooHighException();
-		if (this->_sign == false)
-			throw AForm::FormNotSignException();
-
-		std::cout << this->_target << "has been pardoned by Zaphod Beeblebrox." << std::endl;
-	}
-	catch(AForm::GradeTooHighException& e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
-	catch (const AForm::FormNotSignException& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
+	if (this->getExecLvl() > executor.getGrade() || this->getSignLvl() > executor.getGrade())
+		throw GradeTooHighException();
+	if (this->getSign() == false)
+		throw FormNotSignException();
+	std::cout << this->_target << "has been pardoned by Zaphod Beeblebrox." << std::endl;
 }

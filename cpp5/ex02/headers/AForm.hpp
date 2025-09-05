@@ -45,6 +45,6 @@
 		bool				_sign;
  };
 
- std::ostream&				operator<<( std::ostream& os, const AForm& toPrint );
+ std::ostream&		operator<<( std::ostream& os, const AForm& toPrint );
 
 #endif
