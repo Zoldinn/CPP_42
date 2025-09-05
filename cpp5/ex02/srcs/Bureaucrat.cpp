@@ -6,23 +6,14 @@
  *                    Constructors, destructor, overloads
  *========================================================================**/
 
- Bureaucrat::Bureaucrat( void ) : _name("..."), _grade(150), _exec(150) {};
-Bureaucrat::Bureaucrat( std::string name ) : _name(name), _grade(150), _exec(150) {};
+ Bureaucrat::Bureaucrat( void ) : _name("..."), _grade(150) {};
+Bureaucrat::Bureaucrat( std::string name ) : _name(name), _grade(150) {};
 
-Bureaucrat::Bureaucrat( std::string name, int grade ) : _name(name), _grade(grade), _exec(150)
+Bureaucrat::Bureaucrat( std::string name, int grade ) : _name(name), _grade(grade)
 {
 	if (grade < 1)
 		throw Bureaucrat::GradeTooHighException();
 	if (grade > 150)
-		throw Bureaucrat::GradeTooLowException();
-	this->_grade = grade;
-}
-
-Bureaucrat::Bureaucrat( std::string name, int grade, int exec ) : _name(name), _grade(grade), _exec(exec)
-{
-	if (grade < 1 || exec < 1)
-		throw Bureaucrat::GradeTooHighException();
-	if (grade > 150 || exec > 150)
 		throw Bureaucrat::GradeTooLowException();
 	this->_grade = grade;
 }
