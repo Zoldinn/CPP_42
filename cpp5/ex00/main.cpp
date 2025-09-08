@@ -2,21 +2,18 @@
 
 int	main()
 {
-	Bureaucrat	worker("Alan");
+	Bureaucrat*	worker;
 	int			tests[4] = {151, 0, 20, 3};
 
 	for (int i = 0; i < 4; i++)
 	{
 		try
 		{
-			worker.setGrade(tests[i]);
-			std::cout << worker << std::endl;
+			worker = new Bureaucrat("worker", tests[i]);
+			std::cout << *worker << std::endl;
+			delete worker;
 		}
-		catch(const Bureaucrat::GradeTooHighException& e)
-		{
-			std::cerr << e.what() << '\n';
-		}
-		catch(const Bureaucrat::GradeTooLowException& e)
+		catch(const std::exception& e)
 		{
 			std::cerr << e.what() << '\n';
 		}
