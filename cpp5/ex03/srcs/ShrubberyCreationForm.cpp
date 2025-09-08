@@ -1,0 +1,61 @@
+#include "../headers/ShrubberyCreationForm.hpp"
+#include "../headers/Bureaucrat.hpp"
+
+ShrubberyCreationForm::ShrubberyCreationForm( void ) : AForm("ShrubberyCreationForm", 145, 137)
+{
+	this->_target = "target";
+	std::cout << "ShrubberyCreationForm created" << std::endl;
+}
+
+ShrubberyCreationForm::ShrubberyCreationForm( std::string target ) : AForm("ShrubberyCreationForm", 145, 137)
+{
+	this->_target = target;
+	std::cout << "ShrubberyCreationForm created" << std::endl;
+}
+
+ShrubberyCreationForm::ShrubberyCreationForm( const ShrubberyCreationForm& other ) : AForm(other)
+{
+	*this = other;
+}
+
+ShrubberyCreationForm::~ShrubberyCreationForm( void )
+{
+	std::cout << "ShrubberyCreationForm destroyed" << std::endl;
+}
+
+ShrubberyCreationForm& ShrubberyCreationForm::operator=( const ShrubberyCreationForm& other )
+{
+	if (this != &other)
+	{
+		this->_target = other._target;
+	}
+	return *this;
+}
+
+void	ShrubberyCreationForm::execute( Bureaucrat const & executor ) const
+{
+	if (this->getExecLvl() < executor.getGrade() || this->getSignLvl() < executor.getGrade())
+		throw GradeTooHighException();
+	if (this->getSign() == false)
+		throw FormNotSignException();
+
+	std::fstream	fs;
+	std::string		nameFile;
+
+	nameFile = this->_target + "_shrubbery";
+	fs.open(nameFile.c_str(), std::fstream::out); 
+	if (fs.is_open())
+	{
+
+        fs << "       _-_" << std::endl;
+        fs << "    /~~   ~~\\" << std::endl;
+        fs << " /~~         ~~\\" << std::endl;
+        fs << "{               }" << std::endl;
+        fs << " \\  _-     -_  /" << std::endl;
+        fs << "   ~  \\\\ //  ~" << std::endl;
+        fs << "_- -   | | _- _" << std::endl;
+        fs << "  _ -  | |   -_" << std::endl;
+        fs << "      // \\\\" << std::endl;
+		fs.close();
+	}
+}
