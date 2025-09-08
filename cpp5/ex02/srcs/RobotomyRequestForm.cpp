@@ -14,7 +14,7 @@ RobotomyRequestForm::RobotomyRequestForm( std::string target ) : AForm("Robotomy
 	std::cout << "RobotomyRequestForm created" << std::endl;
 }
 
-RobotomyRequestForm::RobotomyRequestForm( const RobotomyRequestForm& other )
+RobotomyRequestForm::RobotomyRequestForm( const RobotomyRequestForm& other ) : AForm(other)
 {
 	*this = other;
 }

@@ -13,7 +13,7 @@ PresidentialPardonForm::PresidentialPardonForm( std::string target ) : AForm("Pr
 	std::cout << "PresidentialPardonForm created" << std::endl;
 }
 
-PresidentialPardonForm::PresidentialPardonForm( const PresidentialPardonForm& other )
+PresidentialPardonForm::PresidentialPardonForm( const PresidentialPardonForm& other ) : AForm(other)
 {
 	*this = other;
 }

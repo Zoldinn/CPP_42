@@ -13,7 +13,7 @@ ShrubberyCreationForm::ShrubberyCreationForm( std::string target ) : AForm("Shru
 	std::cout << "ShrubberyCreationForm created" << std::endl;
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm( const ShrubberyCreationForm& other )
+ShrubberyCreationForm::ShrubberyCreationForm( const ShrubberyCreationForm& other ) : AForm(other)
 {
 	*this = other;
 }

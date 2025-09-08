@@ -21,7 +21,15 @@ Bureaucrat::Bureaucrat( std::string name, int grade ) : _name(name), _grade(grad
 Bureaucrat::Bureaucrat( const Bureaucrat& other ) : _name(other._name) {this->_grade = other._grade;}
 Bureaucrat::~Bureaucrat( void ) {};
 
-Bureaucrat&			Bureaucrat::operator=( const Bureaucrat& other ) {(void)other;return *this;};
+Bureaucrat&			Bureaucrat::operator=( const Bureaucrat& other )
+{
+	if (this != &other)
+	{
+		this->_grade = other._grade;
+	}
+	return *this;
+}
+
 std::ostream&		operator<<( std::ostream& os, const Bureaucrat& toPrint )
 {
 	os << toPrint.getName() << ", bureaucrat grade " << toPrint.getGrade() << ".";
