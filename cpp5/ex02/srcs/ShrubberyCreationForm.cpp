@@ -46,15 +46,16 @@ void	ShrubberyCreationForm::execute( Bureaucrat const & executor ) const
 	fs.open(nameFile.c_str(), std::fstream::out); 
 	if (fs.is_open())
 	{
-		fs << "			_-_" << std::endl;
-		fs << "	/~~   ~~\\" << std::endl;
-		fs << "/~~         ~~\\" << std::endl;
-		fs << "{               }" << std::endl;
-		fs << "\\  _-     -_  /" << std::endl;
-		fs << "~  \\\\ //  ~" << std::endl;
-		fs << "_- -   | | _- _" << std::endl;
-		fs << "_ -  | |   -_" << std::endl;
-		fs << "	// \\\\" << std::endl;
+
+        fs << "       _-_" << std::endl;
+        fs << "    /~~   ~~\\" << std::endl;
+        fs << " /~~         ~~\\" << std::endl;
+        fs << "{               }" << std::endl;
+        fs << " \\  _-     -_  /" << std::endl;
+        fs << "   ~  \\\\ //  ~" << std::endl;
+        fs << "_- -   | | _- _" << std::endl;
+        fs << "  _ -  | |   -_" << std::endl;
+        fs << "      // \\\\" << std::endl;
 		fs.close();
 	}
 }
