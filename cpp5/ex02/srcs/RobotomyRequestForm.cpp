@@ -35,13 +35,13 @@ RobotomyRequestForm & RobotomyRequestForm::operator=( const RobotomyRequestForm&
 
 void	RobotomyRequestForm::execute( Bureaucrat const & executor ) const
 {
-	if (this->getExecLvl() > executor.getGrade() || this->getSignLvl() > executor.getGrade())
+	if (this->getExecLvl() < executor.getGrade() || this->getSignLvl() < executor.getGrade())
 		throw GradeTooHighException();
 	if (this->getSign() == false)
 		throw FormNotSignException();
 	std::cout << "*** Drilling noises ***" << std::endl;
 	if (std::rand() % 2 == 0)
-		std::cout << this->_target << "have been robotomized successfully" << std::endl;
+		std::cout << this->_target << " have been robotomized successfully" << std::endl;
 	else
-		std::cout << this->_target << "have not been robotomized" << std::endl;
+		std::cout << this->_target << " have not been robotomized" << std::endl;
 }

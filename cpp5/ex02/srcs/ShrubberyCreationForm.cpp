@@ -34,7 +34,7 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=( const ShrubberyCreation
 
 void	ShrubberyCreationForm::execute( Bureaucrat const & executor ) const
 {
-	if (this->getExecLvl() > executor.getGrade() || this->getSignLvl() > executor.getGrade())
+	if (this->getExecLvl() < executor.getGrade() || this->getSignLvl() < executor.getGrade())
 		throw GradeTooHighException();
 	if (this->getSign() == false)
 		throw FormNotSignException();
@@ -43,18 +43,18 @@ void	ShrubberyCreationForm::execute( Bureaucrat const & executor ) const
 	std::string		nameFile;
 
 	nameFile = this->_target + "_shrubbery";
-	fs.open(nameFile.c_str(), std::fstream::out);
+	fs.open(nameFile.c_str(), std::fstream::out); 
 	if (fs.is_open())
 	{
-		fs << "			_-_";
-		fs << "	/~~   ~~\\";
-		fs << "/~~         ~~\\";
-		fs << "{               }";
-		fs << "\\  _-     -_  /";
-		fs << "~  \\\\ //  ~";
-		fs << "_- -   | | _- _";
-		fs << "_ -  | |   -_";
-		fs << "	// \\\\";
+		fs << "			_-_" << std::endl;
+		fs << "	/~~   ~~\\" << std::endl;
+		fs << "/~~         ~~\\" << std::endl;
+		fs << "{               }" << std::endl;
+		fs << "\\  _-     -_  /" << std::endl;
+		fs << "~  \\\\ //  ~" << std::endl;
+		fs << "_- -   | | _- _" << std::endl;
+		fs << "_ -  | |   -_" << std::endl;
+		fs << "	// \\\\" << std::endl;
 		fs.close();
 	}
 }
