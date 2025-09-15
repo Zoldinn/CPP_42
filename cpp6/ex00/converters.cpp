@@ -14,29 +14,45 @@ void	convertFromInt( int val )
 		std::cout << "char  : Non displayable" << std::endl;
 	else
 		std::cout << "char  : " << static_cast<char>( val ) << std::endl;
-	std::cout << "int   : "	<< val << std::endl;
-	std::cout << "float : "	<< static_cast<float>( val ) << std::endl;
-	std::cout << "double: "	<< static_cast<double>( val ) << std::endl;
+	std::cout	<< "int   : "	<< val << std::endl
+				<< "float : "	<< static_cast<float>( val ) << std::endl
+				<< "double: "	<< static_cast<double>( val ) << std::endl;
 }
 
 void	convertFromFloat( float val )
 {
-	if ( !isprint( val ) )
-		std::cout << "char  : Non displayable" << std::endl;
+	if ( val == INFF || val == -INFF || val == +INFF || val == NANF )
+	{
+		std::cout	<< "char  : impossible" << std::endl;
+		std::cout	<< "int   : impossible" << std::endl;
+	}
 	else
-		std::cout << "char  : " << static_cast<char>( val ) << std::endl;
-	std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
-	std::cout << "float : "	<< val << std::endl;
-	std::cout << "double: "	<< static_cast<double>( val ) << std::endl;
+	{
+		if ( !isprint( val ) )
+			std::cout << "char  : Non displayable" << std::endl;
+		else
+			std::cout << "char  : " << static_cast<char>( val ) << std::endl;
+		std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
+	}
+	std::cout	<< "float : "	<< val << std::endl;
+	std::cout	<< "double: "	<< static_cast<double>( val ) << std::endl;
 }
 
 void	convertFromDouble( double val )
 {
-	if ( !isprint( val ) )
-		std::cout << "char  : Non displayable" << std::endl;
+	if ( val == INF || val == -INF || val == +INF || val == NAN )
+	{
+		std::cout	<< "char  : impossible" << std::endl;
+		std::cout	<< "int   : impossible" << std::endl;
+	}
 	else
-		std::cout << "char  : " << static_cast<char>( val ) << std::endl;
-	std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
-	std::cout << "float : "	<< static_cast<float>( val ) << std::endl;
-	std::cout << "double: "	<< val << std::endl;
+	{
+		if ( !isprint( val ) )
+			std::cout << "char  : Non displayable" << std::endl;
+		else
+			std::cout << "char  : " << static_cast<char>( val ) << std::endl;
+		std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
+	}
+	std::cout	<< "float : "	<< static_cast<float>( val ) << std::endl;
+	std::cout	<< "double: "	<< val << std::endl;
 }

@@ -4,7 +4,7 @@ CC = c++
 
 OBJ_DIR = obj
 
-SRC = main.cpp ScalarConverter.cpp
+SRC = main.cpp ScalarConverter.cpp converters.cpp
 
 OBJ = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC))
 

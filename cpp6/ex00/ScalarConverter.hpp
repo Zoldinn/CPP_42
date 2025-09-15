@@ -6,6 +6,11 @@
  #include <cctype>
  #include <limits>
 
+ #define INFF	std::numeric_limits<float>::infinity()
+ #define INF	std::numeric_limits<double>::infinity()
+ #define NANF	std::numeric_limits<float>::quiet_NaN()
+ #define NAN	std::numeric_limits<double>::quiet_NaN()
+
  class ScalarConverter
  {
 	public:
