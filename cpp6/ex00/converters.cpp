@@ -10,7 +10,7 @@ void	convertFromChar( char val )
 
 void	convertFromInt( int val )
 {
-	if ( !isprint( val ) )
+	if ( !isprint(val) )
 		std::cout << "char  : Non displayable" << std::endl;
 	else
 		std::cout << "char  : " << static_cast<char>( val ) << std::endl;
@@ -28,7 +28,7 @@ void	convertFromFloat( float val )
 	}
 	else
 	{
-		if ( !isprint( val ) )
+		if ( !isprint(val) )
 			std::cout << "char  : Non displayable" << std::endl;
 		else
 			std::cout << "char  : " << static_cast<char>( val ) << std::endl;
@@ -47,7 +47,7 @@ void	convertFromDouble( double val )
 	}
 	else
 	{
-		if ( !isprint( val ) )
+		if ( !isprint(val) )
 			std::cout << "char  : Non displayable" << std::endl;
 		else
 			std::cout << "char  : " << static_cast<char>( val ) << std::endl;

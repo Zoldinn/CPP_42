@@ -19,7 +19,7 @@ bool	isNumber( std::string str )
 	{
 		if ( !isdigit(str[i]) )
 		{
-			if ( !(i < str.length() - 1 && str[i] == '.') )
+			if ( i < str.length() - 1 && str[i] != '.' )
 				return false;
 			else if ( i == str.length() - 1 && str[i] != 'f' )
 				return false;
