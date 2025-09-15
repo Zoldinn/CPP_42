@@ -28,7 +28,7 @@ bool	isNumber( std::string str )
 	return true;
 }
 
-void	convertPseudoLiteral( std::string str )
+void	convertPseudoLiteral( std::string str ) //todo: fixed segfault with pseudo litterals
 {
 	if ( str == "inff" )
 		convertFromFloat( INFF );
