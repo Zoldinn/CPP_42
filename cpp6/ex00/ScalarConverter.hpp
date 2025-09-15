@@ -5,6 +5,7 @@
  #include <cstdlib>
  #include <cctype>
  #include <limits>
+ #include <iomanip>
 
  #define INFF	std::numeric_limits<float>::infinity()
  #define INF	std::numeric_limits<double>::infinity()
