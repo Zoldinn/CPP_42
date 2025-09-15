@@ -17,4 +17,10 @@
 		static void			convert( std::string str );
  };
 
+void	convertFromChar( char val );
+void	convertFromInt( int val );
+void	convertFromFloat( float val );
+void	convertFromDouble( double val );
+
+
 #endif
