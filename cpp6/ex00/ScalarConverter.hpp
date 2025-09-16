@@ -19,10 +19,10 @@
 		static void			convert( std::string str );
  };
 
-void	convertFromChar( std::string str );
-void	convertFromInt( std::string str );
-void	convertFromFloat( std::string str );
-void	convertFromDouble( std::string str );
+ void	convertFromChar( std::string str );
+ void	convertFromInt( std::string str );
+ void	convertFromFloat( std::string str );
+ void	convertFromDouble( std::string str );
 
 
 #endif
