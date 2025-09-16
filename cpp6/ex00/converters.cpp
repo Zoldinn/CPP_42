@@ -1,7 +1,9 @@
 #include "ScalarConverter.hpp"
 
-void	convertFromChar( char val )
+void	convertFromChar( std::string str )
 {
+	char	val = static_cast<char>( str[0] );
+
 	std::cout	<< "char  : "	<< "'" << val << "'" << std::endl
 				<< "int   : "	<< static_cast<int>( val ) << std::endl
 				<< std::fixed << std::setprecision(1) 
@@ -10,9 +12,11 @@ void	convertFromChar( char val )
 				<< "double: "	<< static_cast<double>( val ) << std::endl;
 }
 
-void	convertFromInt( int val )
+void	convertFromInt( std::string str )
 {
-	if ( !isprint(val) )
+	int	val = atoi( str.c_str() );
+
+	if ( val < 0 || val > 255 || !isprint(val) )
 		std::cout << "char  : Non displayable" << std::endl;
 	else
 		std::cout << "char  : " << "'" << static_cast<char>( val ) << "'" << std::endl;
@@ -23,9 +27,11 @@ void	convertFromInt( int val )
 				<< "double: "	<< static_cast<double>( val ) << std::endl;
 }
 
-void	convertFromFloat( float val )
+void	convertFromFloat( std::string str )
 {
-	if ( val == INFF || val == -INFF || val == +INFF || val == NANF )
+	float	val = strtof(str.c_str(), NULL);
+
+	if ( std::isinf(val) || std::isnan(val) )
 	{
 		std::cout	<< "char  : impossible" << std::endl;
 		std::cout	<< "int   : impossible" << std::endl;
@@ -44,9 +50,11 @@ void	convertFromFloat( float val )
 				<< "double: "	<< static_cast<double>( val ) << std::endl;
 }
 
-void	convertFromDouble( double val )
+void	convertFromDouble( std::string str )
 {
-	if ( val == INF || val == -INF || val == +INF || val == NAN )
+	double	val = strtod( str.c_str(), NULL );
+
+	if ( std::isinf(val) || std::isnan(val) )
 	{
 		std::cout	<< "char  : impossible" << std::endl;
 		std::cout	<< "int   : impossible" << std::endl;

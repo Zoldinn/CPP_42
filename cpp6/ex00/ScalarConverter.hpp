@@ -6,11 +6,7 @@
  #include <cctype>
  #include <limits>
  #include <iomanip>
-
- #define INFF	std::numeric_limits<float>::infinity()
- #define INF	std::numeric_limits<double>::infinity()
- #define NANF	std::numeric_limits<float>::quiet_NaN()
- #define NAN	std::numeric_limits<double>::quiet_NaN()
+ #include <cmath>
 
  class ScalarConverter
  {
@@ -23,10 +19,10 @@
 		static void			convert( std::string str );
  };
 
-void	convertFromChar( char val );
-void	convertFromInt( int val );
-void	convertFromFloat( float val );
-void	convertFromDouble( double val );
+void	convertFromChar( std::string str );
+void	convertFromInt( std::string str );
+void	convertFromFloat( std::string str );
+void	convertFromDouble( std::string str );
 
 
 #endif

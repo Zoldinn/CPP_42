@@ -25,49 +25,34 @@ bool	isNumber( std::string str )
 				return false;
 		}
 	}
+	if ( str.size() > 12 || atoll( str.c_str() ) > std::numeric_limits<int>::max()
+		|| atoll( str.c_str() ) < std::numeric_limits<int>::min() )
+		return false;
 	return true;
-}
-
-void	convertPseudoLiteral( std::string str ) //todo: fixed segfault with pseudo litterals
-{
-	if ( str == "inff" )
-		convertFromFloat( INFF );
-	else if ( str == "+inff" )
-		convertFromFloat( +INFF );
-	else if ( str == "-inff" )
-		convertFromFloat( -INFF );
-	else if ( str == "nanf" )
-		convertFromFloat( NANF );
-	else if ( str == "+inf" )
-		convertFromDouble( +INF );
-	else if ( str == "inf" )
-		convertFromDouble( INF );
-	else if ( str == "-inf" )
-		convertFromDouble( -INF );
-	else if ( str == "nan" )
-		convertFromDouble( NAN );
-	else
-		std::cerr << "Error: any type match" << std::endl;
 }
 
 void	ScalarConverter::convert( std::string str )
 {
 	const char*	cstr = str.c_str();
 
-	if ( str.length() == 1 && isalpha( static_cast<int>(cstr[0]) ) && isprint(cstr[0]) )
-		convertFromChar( static_cast<char>(str[0]) ); 
+	if ( str.length() == 1 && !isdigit( static_cast<int>(cstr[0]) ) && isprint(cstr[0]) )
+		convertFromChar( str ); 
 	else if ( isNumber(str) )
 	{
 		if ( str.find('.') != std::string::npos )
 		{
 			if ( str.find('f') != std::string::npos )
-				convertFromFloat( static_cast<float>(atof(cstr)) );
+				convertFromFloat( str );
 			else
-				convertFromDouble( atof(cstr) );
+				convertFromDouble( str );
 		}
 		else
-			convertFromInt( atoi( cstr ));
+			convertFromInt( str );
 	}
+	else if ( str == "+inff" || str == "-inff" || str == "nanf" )
+		convertFromFloat( str );
+	else if ( str == "+inf" || str == "-inf" || str == "nan" )
+		convertFromFloat( str );
 	else
-		convertPseudoLiteral( str );
+		std::cerr << "Error: conversion is impossible" << std::endl;
 }
