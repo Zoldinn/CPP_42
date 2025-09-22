@@ -38,7 +38,7 @@ void	convertFromFloat( std::string str )
 	}
 	else
 	{
-		if ( !isprint(val) )
+		if ( val < 0 || val > 255 || !isprint(static_cast<int>(val)) )
 			std::cout << "char  : Non displayable" << std::endl;
 		else
 			std::cout << "char  : " << "'" << static_cast<char>( val ) << "'" << std::endl;
@@ -61,7 +61,7 @@ void	convertFromDouble( std::string str )
 	}
 	else
 	{
-		if ( !isprint(val) )
+		if ( val < 0 || val > 255 || !isprint(static_cast<int>(val)) )
 			std::cout << "char  : Non displayable" << std::endl;
 		else
 			std::cout << "char  : " << "'" << static_cast<char>( val ) << "'" << std::endl;

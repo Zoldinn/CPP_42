@@ -25,7 +25,7 @@ bool	isNumber( std::string str )
 				return false;
 		}
 	}
-	if ( str.size() > 12 || atoll( str.c_str() ) > std::numeric_limits<int>::max()
+	if ( atoll( str.c_str() ) > std::numeric_limits<int>::max()
 		|| atoll( str.c_str() ) < std::numeric_limits<int>::min() )
 		return false;
 	return true;
