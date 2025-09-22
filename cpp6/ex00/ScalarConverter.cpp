@@ -25,34 +25,57 @@ bool	isNumber( std::string str )
 				return false;
 		}
 	}
-	if ( atoll( str.c_str() ) > std::numeric_limits<int>::max()
-		|| atoll( str.c_str() ) < std::numeric_limits<int>::min() )
-		return false;
 	return true;
 }
 
-void	ScalarConverter::convert( std::string str )
+type	typeDectetor( std::string str )
 {
 	const char*	cstr = str.c_str();
 
-	if ( str.length() == 1 && !isdigit( static_cast<int>(cstr[0]) ) && isprint(cstr[0]) )
-		convertFromChar( str ); 
+	if ( str.length() == 1 && !isdigit( static_cast<int>(cstr[0]) ) )
+		return CHAR; 
 	else if ( isNumber(str) )
 	{
 		if ( str.find('.') != std::string::npos )
 		{
 			if ( str.find('f') != std::string::npos )
-				convertFromFloat( str );
+				return FLOAT;
 			else
-				convertFromDouble( str );
+				return DOUBLE;
 		}
-		else
-			convertFromInt( str );
+		return INT;
 	}
 	else if ( str == "+inff" || str == "-inff" || str == "nanf" )
-		convertFromFloat( str );
+		return FLOAT;
 	else if ( str == "+inf" || str == "-inf" || str == "nan" )
-		convertFromFloat( str );
-	else
-		std::cerr << "Error: conversion is impossible" << std::endl;
+		return DOUBLE;
+	return ERROR;
 }
+
+void	ScalarConverter::convert( std::string str )
+{
+	type	detectedType;
+	
+	detectedType = typeDectetor( str );
+	switch (detectedType)
+	{
+		case CHAR	: convertFromChar( str );	break;
+		case INT	: convertFromInt( str );	break;
+		case FLOAT	: convertFromFloat( str );	break;
+		case DOUBLE	: convertFromDouble( str );	break;
+		case ERROR	: std::cerr << "Error: conversion is impossible" << std::endl; break;
+	}
+}
+
+
+&& cstr[0] <= std::numeric_limits<char>::max()
+&& cstr[0] >= std::numeric_limits<char>::min()
+
+&& strtof(str.c_str(), NULL) <= std::numeric_limits<float>::max()
+&& strtof(str.c_str(), NULL) >= std::numeric_limits<float>::min()
+
+if ( strtod(str.c_str(), NULL) <= std::numeric_limits<double>::max()
+	&& strtod(str.c_str(), NULL) >= std::numeric_limits<double>::min() )
+
+if ( atoll( str.c_str() ) > std::numeric_limits<int>::max()
+	|| atoll( str.c_str() ) < std::numeric_limits<int>::min() )

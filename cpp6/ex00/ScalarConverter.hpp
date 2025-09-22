@@ -26,5 +26,7 @@
  void	convertFromFloat( std::string str );
  void	convertFromDouble( std::string str );
 
+ typedef enum type {CHAR, INT, FLOAT, DOUBLE, ERROR} type;
+
 
 #endif

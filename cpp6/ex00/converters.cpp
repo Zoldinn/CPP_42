@@ -4,12 +4,15 @@ void	convertFromChar( std::string str )
 {
 	char	val = static_cast<char>( str[0] );
 
-	std::cout	<< "char  : "	<< "'" << val << "'" << std::endl
-				<< "int   : "	<< static_cast<int>( val ) << std::endl
-				<< std::fixed << std::setprecision(1) 
-				<< "float : "	<< static_cast<float>( val ) << "f" << std::endl
-				<< std::fixed << std::setprecision(1) 
-				<< "double: "	<< static_cast<double>( val ) << std::endl;
+	if ( isprint(val) )
+		std::cout << "char  : "	<< "'" << val << "'" << std::endl;
+	else
+		std::cout << "char  : Non displayable" << std::endl;
+	std::cout	<< "int   : "	<< static_cast<int>( val ) << std::endl;
+	std::cout	<< std::fixed << std::setprecision(1);
+	std::cout	<< "float : "	<< static_cast<float>( val ) << "f" << std::endl;
+	std::cout	<< std::fixed << std::setprecision(1);
+	std::cout	<< "double: "	<< static_cast<double>( val ) << std::endl;
 }
 
 void	convertFromInt( std::string str )
