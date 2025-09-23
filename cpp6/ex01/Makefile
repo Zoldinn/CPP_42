@@ -4,7 +4,7 @@ CC = c++
 
 OBJ_DIR = obj
 
-SRC = main.cpp Serializer.cpp
+SRC = main.cpp
 
 OBJ = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
