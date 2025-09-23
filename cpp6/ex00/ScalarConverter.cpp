@@ -30,6 +30,8 @@ bool	isNumber( std::string str )
 
 bool	isExpNotation( std::string str )
 {
+	if ( str[0] != '-' && str[0] != '+' && !isdigit(str[0]) )
+		return false;
 	for ( size_t i = 0; i < str.length(); i++ )
 	{
 		if ( !isdigit(str[i]) )
@@ -40,12 +42,14 @@ bool	isExpNotation( std::string str )
 				return false;
 			else if ( i == 8 && str[i] != '-' && str[i] != '+' )
 				return false;
+			else if ( i == str.length() - 1 && str[i] == 'f' )
+				return false;
 		}
 	}
 	return true;
 }
 
-type	typeDectetor( std::string str )
+type	typeDetector( std::string str )
 {
 	const char*	cstr = str.c_str();
 
@@ -73,7 +77,7 @@ void	ScalarConverter::convert( std::string str )
 {
 	type	detectedType;
 	
-	detectedType = typeDectetor( str );
+	detectedType = typeDetector( str );
 	switch (detectedType)
 	{
 		case CHAR	: convertFromChar( str );	break;

@@ -9,7 +9,7 @@ int	main( int ac, char** av )
 	}
 	ScalarConverter::convert( std::string(av[1]) );
 
-/* // Testes pour les limites de chaques types
+/* //	Testes pour les limites de chaques types
 	std::cout << std::endl << "=== Limits tests ===" << std::endl << std::endl;
 
 	char	maxChar		= std::numeric_limits<char>::max();
