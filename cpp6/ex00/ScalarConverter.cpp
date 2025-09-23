@@ -28,13 +28,30 @@ bool	isNumber( std::string str )
 	return true;
 }
 
+bool	isExpNotation( std::string str )
+{
+	for ( size_t i = 0; i < str.length(); i++ )
+	{
+		if ( !isdigit(str[i]) )
+		{
+			if ( i == 1 && str[i] != '.' )
+				return false;
+			else if ( i == 7 && str[i] != 'e' )
+				return false;
+			else if ( i == 8 && str[i] != '-' && str[i] != '+' )
+				return false;
+		}
+	}
+	return true;
+}
+
 type	typeDectetor( std::string str )
 {
 	const char*	cstr = str.c_str();
 
 	if ( str.length() == 1 && !isdigit( static_cast<int>(cstr[0]) ) )
 		return CHAR; 
-	else if ( isNumber(str) )
+	else if ( isNumber(str) || isExpNotation(str) )
 	{
 		if ( str.find('.') != std::string::npos )
 		{
@@ -66,16 +83,3 @@ void	ScalarConverter::convert( std::string str )
 		case ERROR	: std::cerr << "Error: conversion is impossible" << std::endl; break;
 	}
 }
-
-
-&& cstr[0] <= std::numeric_limits<char>::max()
-&& cstr[0] >= std::numeric_limits<char>::min()
-
-&& strtof(str.c_str(), NULL) <= std::numeric_limits<float>::max()
-&& strtof(str.c_str(), NULL) >= std::numeric_limits<float>::min()
-
-if ( strtod(str.c_str(), NULL) <= std::numeric_limits<double>::max()
-	&& strtod(str.c_str(), NULL) >= std::numeric_limits<double>::min() )
-
-if ( atoll( str.c_str() ) > std::numeric_limits<int>::max()
-	|| atoll( str.c_str() ) < std::numeric_limits<int>::min() )

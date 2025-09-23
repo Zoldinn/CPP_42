@@ -57,6 +57,7 @@ int	main( int ac, char** av )
 
 	oss << maxFloat;
 	str = oss.str();
+	str += 'f';
 	oss.str("");
 	oss.clear();
 	std::cout << "Test : max float : " << str << std::endl;
@@ -66,6 +67,7 @@ int	main( int ac, char** av )
 	oss << minFloat;
 	str = oss.str();
 	oss.str("");
+	str += 'f';
 	oss.clear();
 	std::cout << "Test : min float : " << str << std::endl;
 	ScalarConverter::convert( str );

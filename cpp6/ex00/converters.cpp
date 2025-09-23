@@ -23,10 +23,10 @@ void	convertFromInt( std::string str )
 		std::cout << "char  : Non displayable" << std::endl;
 	else
 		std::cout << "char  : " << "'" << static_cast<char>( val ) << "'" << std::endl;
-	std::cout	<< "int   : "	<< val << std::endl
-				<< std::fixed << std::setprecision(1) 
-				<< "float : "	<< static_cast<float>( val ) << "f" << std::endl
-				<< std::fixed << std::setprecision(1) 
+	std::cout	<< "int   : "	<< val << std::endl;
+	std::cout	<< std::fixed << std::setprecision(1)
+				<< "float : "	<< static_cast<float>( val ) << "f" << std::endl;
+	std::cout	<< std::fixed << std::setprecision(1)
 				<< "double: "	<< static_cast<double>( val ) << std::endl;
 }
 
@@ -45,7 +45,10 @@ void	convertFromFloat( std::string str )
 			std::cout << "char  : Non displayable" << std::endl;
 		else
 			std::cout << "char  : " << "'" << static_cast<char>( val ) << "'" << std::endl;
-		std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
+		if ( val <= std::numeric_limits<int>::max() && val >= std::numeric_limits<int>::min() )
+			std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
+		else
+			std::cout << "int   : outside int limits" << std::endl;
 	}
 	std::cout	<< std::fixed << std::setprecision(1) 
 				<< "float : "	<< val << "f" << std::endl;
@@ -68,10 +71,18 @@ void	convertFromDouble( std::string str )
 			std::cout << "char  : Non displayable" << std::endl;
 		else
 			std::cout << "char  : " << "'" << static_cast<char>( val ) << "'" << std::endl;
-		std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
+		if ( val <= std::numeric_limits<int>::max() && val >= std::numeric_limits<int>::min() )
+			std::cout << "int   : "	<< static_cast<float>( val ) << std::endl;
+		else
+			std::cout << "int   : outside int limits" << std::endl;
 	}
-	std::cout	<< std::fixed << std::setprecision(1) 
-				<< "float : "	<< static_cast<float>( val ) << "f" << std::endl;
+	if ( val <= std::numeric_limits<float>::max() && val >= std::numeric_limits<float>::min() )
+	{
+		std::cout	<< std::fixed << std::setprecision(1) 
+					<< "float : "	<< static_cast<float>( val ) << "f" << std::endl;
+	}
+	else
+		std::cout << "float : outside float limits" << std::endl;
 	std::cout	<< std::fixed << std::setprecision(1) 
 				<< "double: "	<< val << std::endl;
 }
