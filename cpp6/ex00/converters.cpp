@@ -76,7 +76,7 @@ void	convertFromDouble( std::string str )
 		else
 			std::cout << "int   : outside int limits" << std::endl;
 	}
-	if ( val <= std::numeric_limits<float>::max() && val >= std::numeric_limits<float>::min() )
+	if ( val <= std::numeric_limits<float>::max() && val >= -std::numeric_limits<float>::max() )
 	{
 		std::cout	<< std::fixed << std::setprecision(1) 
 					<< "float : "	<< static_cast<float>( val ) << "f" << std::endl;
