@@ -4,22 +4,22 @@ int	main( int ac, char** av )
 {
 	if ( ac != 2 )
 	{
-		std::cerr << "Error: no args" << std::endl;
+		std::cerr << "Error: args" << std::endl;
 		return	1;
 	}
 	ScalarConverter::convert( std::string(av[1]) );
 
-/* //	Testes pour les limites de chaques types
+//	Testes pour les limites de chaques types
 	std::cout << std::endl << "=== Limits tests ===" << std::endl << std::endl;
 
-	char	maxChar		= std::numeric_limits<char>::max();
-	char	minChar		= std::numeric_limits<char>::min();
-	int		maxInt		= std::numeric_limits<int>::max();
-	int		minInt		= std::numeric_limits<int>::min();
-	float	maxFloat	= std::numeric_limits<float>::max();
-	float	minFloat	= -std::numeric_limits<float>::max();
-	double	maxDouble	= std::numeric_limits<double>::max();
-	double	minDouble	= std::numeric_limits<double>::min();
+	char	maxChar		= std::numeric_limits<char>::max();		//  127
+	char	minChar		= std::numeric_limits<char>::min();		// -128
+	int		maxInt		= std::numeric_limits<int>::max();		//  2147483647
+	int		minInt		= std::numeric_limits<int>::min();		// -2147483648
+	float	maxFloat	= std::numeric_limits<float>::max();	//  3.40282e+38f
+	float	minFloat	= -std::numeric_limits<float>::max();	// -3.40282e+38f
+	double	maxDouble	= std::numeric_limits<double>::max();	//  1.79769e+308
+	double	minDouble	= -std::numeric_limits<double>::max();	// -1.79769e+308
 
 	std::ostringstream	oss;
 	std::string			str;
@@ -28,7 +28,7 @@ int	main( int ac, char** av )
 	str = oss.str();
 	oss.str("");
 	oss.clear();
-	std::cout << "Test : max char : non displayable" << std::endl;
+	std::cout << "Test : max char : " << static_cast<int>( maxChar ) << std::endl;
 	ScalarConverter::convert( str );
 	std::cout << std::endl;
 
@@ -36,7 +36,7 @@ int	main( int ac, char** av )
 	str = oss.str();
 	oss.str("");
 	oss.clear();
-	std::cout << "Test : min char : non displayable" << std::endl;
+	std::cout << "Test : min char : " << static_cast<int>( minChar )<< std::endl;
 	ScalarConverter::convert( str );
 	std::cout << std::endl;
 
@@ -88,6 +88,6 @@ int	main( int ac, char** av )
 	oss.clear();
 	std::cout << "Test : min double : " << str << std::endl;
 	ScalarConverter::convert( str );
- */
+
 	return	0;
 }

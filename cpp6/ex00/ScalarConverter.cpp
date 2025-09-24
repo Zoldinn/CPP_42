@@ -11,42 +11,51 @@ ScalarConverter& ScalarConverter::operator=( const ScalarConverter& other )
 
 /*============================================================================*/
 
-bool	isNumber( std::string str )
+bool	isNumber( std::string& str )
 {
-	if ( str[0] != '-' && str[0] != '+' && !isdigit(str[0]) )
-		return false;
-	for ( size_t i = 1; i < str.length(); i++ )
-	{
-		if ( !isdigit(str[i]) )
-		{
-			if ( i < str.length() - 1 && str[i] != '.' )
-				return false;
-			else if ( i == str.length() - 1 && str[i] != 'f' )
-				return false;
-		}
-	}
-	return true;
-}
+	size_t	i			= 0;
+	bool	intDigits	= false;
+	bool	decDigits	= false;
+	bool	expDigits	= false;
 
-bool	isExpNotation( std::string str )
-{
-	if ( str[0] != '-' && str[0] != '+' && !isdigit(str[0]) )
-		return false;
-	for ( size_t i = 0; i < str.length(); i++ )
+	if ( str[i] == '-' || str[i] == '+' )
+		i++;
+	while ( i < str.length() && isdigit(str[i]) )
 	{
-		if ( !isdigit(str[i]) )
+		intDigits = true;
+		i++;
+	}
+	if ( str[i] == '.' )
+	{
+		i++;
+		while ( i < str.length() && isdigit(str[i]) )
 		{
-			if ( i == 1 && str[i] != '.' )
-				return false;
-			else if ( i == 7 && str[i] != 'e' )
-				return false;
-			else if ( i == 8 && str[i] != '-' && str[i] != '+' )
-				return false;
-			else if ( i == str.length() - 1 && str[i] == 'f' )
-				return false;
+			decDigits = true;
+			i++;
 		}
 	}
-	return true;
+	if ( intDigits == false || (decDigits == true && intDigits == false) )
+		return false;
+	if ( i < str.length() && str[i] == 'e' )
+	{
+		i++;
+		if ( i < str.length() && (str[i] == '-' || str[i] == '+') )
+		{
+			i++;
+			while ( i < str.length() && isdigit(str[i]) )
+			{
+				expDigits = true;
+				i++;
+			}
+		}
+		if ( expDigits == false )
+			return false;
+	}
+	if ( i < str.length() && str[i] == 'f' )
+		i++;
+	if ( i == str.length() )
+		return true;
+	return false;
 }
 
 type	typeDetector( std::string str )
@@ -55,7 +64,7 @@ type	typeDetector( std::string str )
 
 	if ( str.length() == 1 && !isdigit( static_cast<int>(cstr[0]) ) )
 		return CHAR; 
-	else if ( isNumber(str) || isExpNotation(str) )
+	else if ( isNumber(str) )
 	{
 		if ( str.find('.') != std::string::npos )
 		{
