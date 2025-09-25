@@ -11,6 +11,7 @@ ScalarConverter& ScalarConverter::operator=( const ScalarConverter& other )
 
 /*============================================================================*/
 
+// Check if str is equivalent to an int, float or double, and accept exponant notation
 bool	isNumber( std::string& str )
 {
 	size_t	i			= 0;
@@ -58,6 +59,8 @@ bool	isNumber( std::string& str )
 	return false;
 }
 
+/*========================================*/
+
 type	typeDetector( std::string str )
 {
 	const char*	cstr = str.c_str();
@@ -81,6 +84,8 @@ type	typeDetector( std::string str )
 		return DOUBLE;
 	return ERROR;
 }
+
+/*========================================*/
 
 void	ScalarConverter::convert( std::string str )
 {

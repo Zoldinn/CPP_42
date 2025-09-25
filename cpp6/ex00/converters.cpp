@@ -1,5 +1,7 @@
 #include "ScalarConverter.hpp"
 
+/*= ========================================  UTILS  ============================================*/
+
 bool	ft_strtoi( std::string str, int& val )
 {
 	std::istringstream	iss( str );

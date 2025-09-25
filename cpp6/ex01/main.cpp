@@ -1,11 +1,11 @@
 #include "Serializer.hpp"
 
-uintptr_t	Serializer::serializer( Data* ptr )
+uintptr_t	Serializer::serialize( Data* ptr )
 {
 	return reinterpret_cast<uintptr_t>( ptr );
 }
 
-Data*		Serializer::deserializer( uintptr_t raw )
+Data*		Serializer::deserialize( uintptr_t raw )
 {
 	return reinterpret_cast<Data*>( raw );
 }
@@ -19,8 +19,8 @@ int	main( void )
 
 	ptr = &a;
 	save = ptr;
-	x = Serializer::serializer( ptr );
-	ptr = Serializer::deserializer( x );
+	x = Serializer::serialize( ptr );
+	ptr = Serializer::deserialize( x );
 	if ( ptr == save )
 		std::cout << "They're the same" << std::endl;
 	else

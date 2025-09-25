@@ -25,7 +25,7 @@ Base*	generate( void )
 
 void	identify( Base* p )
 {
-	if (!p)
+	if ( !p )
 		std::cout << "Error: NULL" << std::endl;
 	else if ( dynamic_cast< A* >( p ) )
 		std::cout << "A" << std::endl;

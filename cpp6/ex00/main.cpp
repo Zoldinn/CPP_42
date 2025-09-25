@@ -8,7 +8,7 @@ int	main( int ac, char** av )
 		return	1;
 	}
 	ScalarConverter::convert( std::string(av[1]) );
-
+/* 
 //	Testes pour les limites de chaques types
 	std::cout << std::endl << "=== Limits tests ===" << std::endl << std::endl;
 
@@ -88,6 +88,6 @@ int	main( int ac, char** av )
 	oss.clear();
 	std::cout << "Test : min double : " << str << std::endl;
 	ScalarConverter::convert( str );
-
+ */
 	return	0;
 }
