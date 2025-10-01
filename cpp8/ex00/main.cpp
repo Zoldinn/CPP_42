@@ -4,14 +4,14 @@
 
 int	main( void )
 {
-	std::vector<int>	vec;
+	std::vector<int>	_vec;
 	int					wanted = 5;
 
 	srand( time(NULL) );
 	for ( int i = 0; i < 10; i++ )
 	{
-		vec.push_back( rand() % 100 );
-		std::cout << vec[i];
+		_vec.push_back( rand() % 100 );
+		std::cout << _vec[i];
 		if ( i + 1 != 10 )
 			std::cout << ", ";
 	}
@@ -19,7 +19,7 @@ int	main( void )
 
 	try 
 	{
-		std::cout << wanted << " found ? : " << easyfind( vec, wanted ) << std::endl;
+		std::cout << wanted << " found ? : " << easyfind( _vec, wanted ) << std::endl;
 	}
 	catch ( const std::exception& e )
 	{
