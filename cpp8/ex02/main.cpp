@@ -30,7 +30,8 @@ int	main( void )
 			std::cout << ", ";
 		++it;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
+
 
 
 	std::cout << "========== COMPARE WITH LIST (should print same)==========" << std::endl << std::endl;

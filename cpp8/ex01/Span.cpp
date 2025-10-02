@@ -34,6 +34,31 @@ const char*	Span::EEmpty::what( void ) const throw()
 	return "empty";
 }
 
+
+/**========================================================================
+*                                   Util
+***========================================================================**/
+
+void	Span::printVec( void )
+{
+	try 
+	{
+		if ( _vec.empty() )
+			throw Span::EEmpty();
+		for ( std::vector<int>::iterator it = _vec.begin(); it != _vec.end(); it++ )
+		{
+			std::cout << *it;
+			if ( it + 1 != _vec.end() )
+				std::cout << ", ";
+		}
+		std::cout << std::endl;
+	}
+	catch ( const :: Span::EEmpty& e )
+	{
+		std::cout << e.what() << std::endl;
+	}
+}
+
 /**========================================================================
 *                           Required features
 ***========================================================================**/
@@ -83,25 +108,4 @@ int		Span::longestSpan( void )
 	min = std::min_element( _vec.begin(), _vec.end() );
 	max = std::max_element( _vec.begin(), _vec.end() );
 	return *max - *min;
-}
-
-
-void	Span::printVec( void )
-{
-	try 
-	{
-		if ( _vec.empty() )
-			throw Span::EEmpty();
-		for ( std::vector<int>::iterator it = _vec.begin(); it != _vec.end(); it++ )
-		{
-			std::cout << *it;
-			if ( it + 1 != _vec.end() )
-				std::cout << ", ";
-		}
-		std::cout << std::endl;
-	}
-	catch ( const :: Span::EEmpty& e )
-	{
-		std::cout << e.what() << std::endl;
-	}
 }
