@@ -24,7 +24,6 @@ class BitcoinExchange
 		BitcoinExchange&				operator=( const BitcoinExchange& other );
 
 		void							solver( void ) const;
-		bool							check_dtb_file( const std::fstream& fs );
 		class EWrongFormat : public std::exception 
 		{
 			public:
