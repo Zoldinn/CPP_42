@@ -50,16 +50,45 @@ void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs
 
 /*==========================================================================*/
 
+#define YEAR	0
+#define MONTH	1
+#define DAY		2
 bool	checkDate( const std::string& line )
 {
-	for ( int i = 0; i < line.size(); i++ )
+	std::string			date[3];
+	int					valDate[3];
+	std::map<int, int>	maxDay{ { 1, 31}, { 2, 28}, { 3, 31}, { 4, 30}, { 5, 31}, { 6, 30},
+								{ 7, 31}, { 8, 31}, { 9, 30}, { 10, 31}, { 11, 30}, { 12, 31} };
+
+	if ( line.size() < 10 )
+		return false;
+
+	date[DAY]   = line.substr( 0, 4 );
+	date[MONTH] = line.substr( 5, 2 );
+	date[YEAR]  = line.substr( 8, 2 );
+
+	for ( int i = 0; i < 3; i++ )
 	{
-		if ( i < 4 && !isdigit(line[i]) )
-			return false;
-		if ( i == 5 && line[i] != '-' )
-			return false;
-		if ( i > 5 && i < )
+		for ( int x = 0; x < date[i].size(); x++ )
+		{
+			if ( !isdigit(date[i][x]) )
+				return false;
+		}
+		valDate[i] = std::atoi( date[i].c_str() );
 	}
+	if ( line[4] != '-' || line[7] != '-' )
+		return false;
+	if ( valDate[YEAR] < 2009 || valDate[YEAR] > 2025 ) // 2009: birth of bitcoin
+		return false;
+	if ( valDate[MONTH] < 1 || valDate[MONTH] > 12 )
+		return false;
+	if ( valDate[DAY] < 1 || valDate[DAY] > maxDay[ valDate[MONTH] ] )
+	{
+		if ( valDate[MONTH] == 2 && valDate[YEAR] % 400 == 0 && valDate[DAY] <= 29 ) // check bissextile year
+			return true;
+		return false;
+	}
+	
 	return true;
 }
 
