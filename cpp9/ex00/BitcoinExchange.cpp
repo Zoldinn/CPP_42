@@ -11,10 +11,7 @@ BitcoinExchange::BitcoinExchange( std::string& tiPath )
 	std::string	tpPath = PATH_TP;
 
 	_fill( _dtb[TP], _fs[TP], tpPath );
-	std::cerr << "(" << tpPath << " loaded successfuly)" << std::endl;
 	_fill( _dtb[TI], _fs[TI], tiPath );
-	std::cerr << "(" << tiPath << " loaded successfuly)" << std::endl;
-
 	//...
 }
 
@@ -72,9 +69,9 @@ bool	checkDate( const std::string& line )
 	if ( line.size() < 10 )
 		return false;
 
-	date[DAY]   = line.substr( 0, 4 );
-	date[MONTH] = line.substr( 5, 2 );
-	date[YEAR]  = line.substr( 8, 2 );
+	date[YEAR]	= line.substr( 0, 4 );
+	date[MONTH]	= line.substr( 5, 2 );
+	date[DAY]	= line.substr( 8, 2 );
 
 	for ( size_t i = 0; i < 3; i++ )
 	{
@@ -166,10 +163,14 @@ void	BitcoinExchange::solver( void ) const
 {
 	std::map<std::string, float>::const_iterator it;
 
-	for ( int i = 0; i < 2; i++ )
-	{
-		for ( it = _dtb[i].begin(); it != _dtb[i].end(); it++ )
-			std::cout << it->first << " | " << it->second << std::endl;
-		std::cout << std::endl;
-	}
+	for ( it = _dtb[TP].begin(); it != _dtb[TP].end(); it++ )
+		std::cout << it->first << " | " << it->second << std::endl;
+	std::cout << std::endl;
+
+	std::cout << " ============================================== " << std::endl;
+
+	for ( it = _dtb[TI].begin(); it != _dtb[TI].end(); it++ )
+		std::cout << it->first << " | " << it->second << std::endl;
+	std::cout << std::endl;
+
 }
