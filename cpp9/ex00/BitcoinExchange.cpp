@@ -10,9 +10,27 @@ BitcoinExchange::BitcoinExchange( std::string& tiPath )
 {
 	std::string	tpPath = PATH_TP;
 
-	_fill( _dtb_tp, _fs_tp, tpPath );
-	_fill( _dtb_ti, _fs_ti, tiPath );
+	_fill( _dtb[TP], _fs[TP], tpPath );
+	std::cerr << "(" << tpPath << " file loaded successfuly)" << std::endl;
+	_fill( _dtb[TI], _fs[TI], tiPath );
+	std::cerr << "(" << tiPath << " file loaded successfuly)" << std::endl;
 
+	//...
+}
+
+BitcoinExchange::BitcoinExchange( const BitcoinExchange& copy ) { *this = copy; };
+
+BitcoinExchange::~BitcoinExchange( void ) {};
+
+BitcoinExchange&	BitcoinExchange::operator=( const BitcoinExchange& other )
+{
+	if ( this != &other )
+	{
+		// don't assign the fs to avoid have 2 fs pointing to the same file
+		this->_dtb[TP] = other._dtb[TP];
+		this->_dtb[TI] = other._dtb[TI];
+	}
+	return *this;
 }
 
 /**========================================================================
@@ -25,56 +43,26 @@ const char*	BitcoinExchange::EWrongFormat::what() const throw()
 }
 
 /**========================================================================
- *                                    Utils
+ *                                  Utils
  *========================================================================**/
 
-bool	find( const std::string& str, char c )
+bool	bfind( const std::string& str, char c )
 {
 	return ( str.find(c) == std::string::npos ) ? false : true;
 }
 
 /**========================================================================
- *                                 Functions
+ *                          Fill the database (the maps)
  *========================================================================**/
-
- //======================== Fill the databases (map) =========================
-
-void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs, std::string& fsPath )
-{
-	std::string	line, date, value;
-	size_t		sepPos;
-	bool		firstSkiped = false;
-	
-	fs.exceptions( std::fstream::badbit | std::fstream::failbit );
-	fs.open( fsPath, std::fstream::in ); // if fail, .open() throw and main catch it
-	
-	// subject say, file must be "date | value"
-	// in fact the file they give have no space, so I accept no space or just 1 space
-	while ( getline(fs, line) )
-	{
-		sepPos = find(line, '|') ? line.find(',') : line.find('|');
-		if ( !firstSkiped ) // to avoid first line
-			firstSkiped = true;
-		else if ( checkDate(line) && (find(line, '|') || find(line, '-')) && checkValue(line) )
-		{
-			date		= line.substr( 0, sepPos );
-			value		= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
-			dtb[date]	= std::strtof( value.c_str(), NULL );
-		}
-	}
-	fs.close();
-}
-
 
 #define YEAR	0
 #define MONTH	1
 #define DAY		2
 bool	checkDate( const std::string& line )
 {
-	std::string			date[3];
 	int					valDate[3];
-	std::map<int, int>	maxDay{ {1, 31}, {2, 28}, {3, 31}, {4, 30}, {5, 31}, {6, 30},
-								{7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31} };
+	int					maxDay[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	std::string			date[3];
 
 	if ( line.size() < 10 )
 		return false;
@@ -83,9 +71,9 @@ bool	checkDate( const std::string& line )
 	date[MONTH] = line.substr( 5, 2 );
 	date[YEAR]  = line.substr( 8, 2 );
 
-	for ( int i = 0; i < 3; i++ )
+	for ( size_t i = 0; i < 3; i++ )
 	{
-		for ( int x = 0; x < date[i].size(); x++ )
+		for ( size_t x = 0; x < date[i].size(); x++ )
 		{
 			if ( !isdigit(date[i][x]) )
 				return false;
@@ -100,7 +88,7 @@ bool	checkDate( const std::string& line )
 		return false;
 	if ( valDate[MONTH] < 1 || valDate[MONTH] > 12 )
 		return false;
-	if ( valDate[DAY] < 1 || valDate[DAY] > maxDay[valDate[MONTH]] )
+	if ( valDate[DAY] < 1 || valDate[DAY] > (maxDay[valDate[MONTH]] - 1) )
 	{
 		// check bissextile year
 		if ( valDate[MONTH] == 2 && valDate[YEAR] % 400 == 0 && valDate[DAY] <= 29 )
@@ -113,14 +101,15 @@ bool	checkDate( const std::string& line )
 
 bool	checkValue( const std::string& line )
 {
-	std::string	val;
 	size_t		sepPos;
+	std::string	val;
 
-	sepPos = find(line, '|') ? line.find(',') : line.find('|');
+	sepPos = bfind(line, '|') ? line.find('|') : line.find(',');
 	sepPos = ( line[sepPos + 1] == ' ' ) ? sepPos + 1 : sepPos;
 	val    = line.substr( ++sepPos ); // ++sepPos for starting at value and not at sep
 
-	for ( int i = 0; i < val.size(); i++ )
+	// only accept positive integer or positive float with a '.', so no '-' neither sign '+'
+	for ( size_t i = 0; i < val.size(); i++ )
 	{
 		if ( !isdigit(val[i]) )
 		{
@@ -130,6 +119,51 @@ bool	checkValue( const std::string& line )
 				return false;
 		}
 	}
+	if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
+		return false;
 
-	if
+	return true;
+}
+
+void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs, std::string& fsPath )
+{
+	std::string	line, date, value;
+	size_t		sepPos;
+	bool		firstSkiped = false;
+	
+	fs.exceptions( std::fstream::badbit | std::fstream::failbit );
+	fs.open( fsPath.c_str(), std::fstream::in ); // if fail, .open() throw and main catch it
+	
+	// subject say, file must be "date | value"
+	// in fact the file they give have no space, so I accept no space or just 1 space
+	while ( getline(fs, line) )
+	{
+		if ( !firstSkiped ) // to avoid first line
+			firstSkiped = true;
+		else if ( checkDate(line) && (bfind(line, '|') || bfind(line, '-')) && checkValue(line) )
+		{
+			sepPos 		= bfind(line, '|') ? line.find('|') : line.find(',');
+			date		= line.substr( 0, sepPos );
+			value		= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
+			dtb[date]	= std::strtof( value.c_str(), NULL );
+		}
+	}
+	fs.close();
+}
+
+
+/**========================================================================
+ *                                   Solver
+ *========================================================================**/
+
+void	BitcoinExchange::solver( void ) const
+{
+	std::map<std::string, float>::const_iterator it;
+
+	for ( int i = 0; i < 2; i++ )
+	{
+		for ( it = _dtb[i].begin(); it != _dtb[i].end(); it++ )
+			std::cout << it->first << " | " << it->second << std::endl;
+		std::cout << std::endl;
+	}
 }

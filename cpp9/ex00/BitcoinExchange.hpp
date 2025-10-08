@@ -5,22 +5,24 @@
 #include <fstream>
 #include <map>
 
-#define PATH_TP	"./data.csv"
+#define PATH_TP	"data.csv"
+
+#define TP 0 // time/price
+#define TI 1 // time/input
 
 class BitcoinExchange
 {
 	private:
-		BitcoinExchange( void );
-		std::fstream					_fs_tp;  // file stream time/price
-		std::fstream					_fs_ti;  // file stream time/input
-		std::map<std::string, float>	_dtb_tp; // database time/price
-		std::map<std::string, float>	_dtb_ti; // database time/input
-		void							_fill( std::map<std::string, float>& dtb, std::fstream& fs, std::string& fsName );
+										BitcoinExchange( void );
+		std::fstream					_fs[2];
+		std::map<std::string, float>	_dtb[2];
+		void							_fill( std::map<std::string, float>& dtb, std::fstream& fs,
+											std::string& fsName );
 
 	public:
-		BitcoinExchange( std::string& ti );
-		BitcoinExchange( const BitcoinExchange& copy );
-		~BitcoinExchange( void );
+										BitcoinExchange( std::string& ti );
+										BitcoinExchange( const BitcoinExchange& copy );
+										~BitcoinExchange( void );
 		BitcoinExchange&				operator=( const BitcoinExchange& other );
 
 		void							solver( void ) const;
