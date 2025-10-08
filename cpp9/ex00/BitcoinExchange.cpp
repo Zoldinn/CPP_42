@@ -11,9 +11,9 @@ BitcoinExchange::BitcoinExchange( std::string& tiPath )
 	std::string	tpPath = PATH_TP;
 
 	_fill( _dtb[TP], _fs[TP], tpPath );
-	std::cerr << "(" << tpPath << " file loaded successfuly)" << std::endl;
+	std::cerr << "(" << tpPath << " loaded successfuly)" << std::endl;
 	_fill( _dtb[TI], _fs[TI], tiPath );
-	std::cerr << "(" << tiPath << " file loaded successfuly)" << std::endl;
+	std::cerr << "(" << tiPath << " loaded successfuly)" << std::endl;
 
 	//...
 }
@@ -40,6 +40,11 @@ BitcoinExchange&	BitcoinExchange::operator=( const BitcoinExchange& other )
 const char*	BitcoinExchange::EWrongFormat::what() const throw()
 {
 	return "Wrong data format";
+}
+
+const char*	BitcoinExchange::EFailedOpen::what() const throw()
+{
+	return "open() failed";
 }
 
 /**========================================================================
@@ -130,9 +135,10 @@ void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs
 	std::string	line, date, value;
 	size_t		sepPos;
 	bool		firstSkiped = false;
-	
-	fs.exceptions( std::fstream::badbit | std::fstream::failbit );
-	fs.open( fsPath.c_str(), std::fstream::in ); // if fail, .open() throw and main catch it
+
+	fs.open( fsPath.c_str() );
+	if ( fs.is_open() == false )
+		throw EFailedOpen();
 	
 	// subject say, file must be "date | value"
 	// in fact the file they give have no space, so I accept no space or just 1 space
@@ -140,7 +146,7 @@ void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs
 	{
 		if ( !firstSkiped ) // to avoid first line
 			firstSkiped = true;
-		else if ( checkDate(line) && (bfind(line, '|') || bfind(line, '-')) && checkValue(line) )
+		else if ( checkDate(line) && (bfind(line, '|') || bfind(line, ',')) && checkValue(line) )
 		{
 			sepPos 		= bfind(line, '|') ? line.find('|') : line.find(',');
 			date		= line.substr( 0, sepPos );

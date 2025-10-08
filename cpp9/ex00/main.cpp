@@ -15,9 +15,9 @@ int	main( int ac, char **av )
 	{
 		btc = new BitcoinExchange( ti );
 	}
-	catch ( const std::fstream::failure& e ) 
+	catch ( const BitcoinExchange::EFailedOpen& e ) 
 	{
-		std::cerr << "Error: open() failed" << std::endl;
+		std::cerr << "Error: " << e.what() << std::endl;
 		return -1;
 	}
 	catch (...)

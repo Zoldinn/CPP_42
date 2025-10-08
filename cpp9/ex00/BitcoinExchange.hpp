@@ -31,4 +31,9 @@ class BitcoinExchange
 			public:
 				const char*	what() const throw();
 		};
+		class EFailedOpen : public std::exception 
+		{
+			public:
+				const char*	what() const throw();
+		};
 };
