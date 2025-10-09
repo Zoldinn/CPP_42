@@ -13,19 +13,20 @@
 class BitcoinExchange
 {
 	private:
-										BitcoinExchange( void );
-		std::fstream					_fs[2];
-		std::map<std::string, float>	_dtb[2];
-		void							_fill( std::map<std::string, float>& dtb, std::fstream& fs,
-											std::string& fsName );
+											BitcoinExchange( void );
+		std::fstream						_fs[2];
+		std::map<std::string, float>		_dtb[2];
+		std::map<std::string, std::string>	_error_dtb;
+		void								_fill( std::map<std::string, float>& dtb,
+												std::fstream& fs, std::string& fsName );
 
 	public:
-										BitcoinExchange( std::string& ti );
-										BitcoinExchange( const BitcoinExchange& copy );
-										~BitcoinExchange( void );
-		BitcoinExchange&				operator=( const BitcoinExchange& other );
+											BitcoinExchange( std::string& ti );
+											BitcoinExchange( const BitcoinExchange& copy );
+											~BitcoinExchange( void );
+		BitcoinExchange&					operator=( const BitcoinExchange& other );
 
-		void							solver( void ) const;
+		void								solver( void ) const;
 		class EWrongFormat : public std::exception 
 		{
 			public:
