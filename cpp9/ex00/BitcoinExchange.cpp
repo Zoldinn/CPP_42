@@ -64,22 +64,23 @@ bool	bfind( const std::string& str, char c )
 #define DAY		2
 
 
-bool			checkDateConsistency( int* date[3] )
+bool			checkDateConsistency( int (&date)[3] )
 {
 	int	maxDay[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 	// 2009: birth of bitcoin
-	if ( *date[YEAR] < 2009 || *date[YEAR] > 2025 )
+	if ( date[YEAR] < 2009 || date[YEAR] > 2025 )
 		return false;
-	if ( *date[MONTH] < 1 || *date[MONTH] > 12 )
+	if ( date[MONTH] < 1 || date[MONTH] > 12 )
 		return false;
-	if ( *date[DAY] < 1 || *date[DAY] > (maxDay[*date[MONTH]] - 1) )
+	if ( date[DAY] < 1 || date[DAY] > (maxDay[date[MONTH]] - 1) )
 	{
 		// check bissextile year
-		if ( *date[MONTH] == 2 && *date[YEAR] % 400 == 0 && *date[DAY] <= 29 )
+		if ( date[MONTH] == 2 && date[YEAR] % 400 == 0 && date[DAY] <= 29 )
 			return true;
 		return false;
 	}
+	return true;
 }
 
 
@@ -90,21 +91,21 @@ bool			checkValueConsistency( const std::string& val )
 	return true;
 }
 
-std::string&	errorMsgSelector( int* date[3], const std::string& val )
+std::string	errorMsgSelector( int (&date)[3], const std::string& val )
 {
 	int			maxDay[12]   = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	std::string	dateErrMsg   = "Error: bad input => " + *date[YEAR] + '-' + *date[MONTH] + '-' + *date[DAY];
+	std::string	dateErrMsg   = "Error: bad input => " + date[YEAR] + '-' + date[MONTH] + '-' + date[DAY];
 	std::string	valErrMsg[2] = { "Error: too large a number.", "Error: not a positive number" };
 
 	// 2009: birth of bitcoin
-	if ( *date[YEAR] < 2009 || *date[YEAR] > 2025 )
+	if ( date[YEAR] < 2009 || date[YEAR] > 2025 )
 		return dateErrMsg;
-	if ( *date[MONTH] < 1 || *date[MONTH] > 12 )
+	if ( date[MONTH] < 1 || date[MONTH] > 12 )
 		return dateErrMsg;
-	if ( *date[DAY] < 1 || *date[DAY] > (maxDay[*date[MONTH]] - 1) )
+	if ( date[DAY] < 1 || date[DAY] > (maxDay[date[MONTH]] - 1) )
 	{
 		// check bissextile year
-		if ( *date[MONTH] == 2 && *date[YEAR] % 400 == 0 && *date[DAY] <= 29 )
+		if ( date[MONTH] == 2 && date[YEAR] % 400 == 0 && date[DAY] <= 29 )
 			return dateErrMsg;
 		return dateErrMsg;
 	}
@@ -113,12 +114,13 @@ std::string&	errorMsgSelector( int* date[3], const std::string& val )
 		return valErrMsg[0];
 	else if ( std::strtof(val.c_str(), NULL) < 0 )
 		return valErrMsg[1];
+	return "Error";
 }
 
 
 /*================================ Check format  ==============================*/
 
-bool	checkDateFormat( const std::string& line, int* valDate[3] )
+bool	checkDateFormat( const std::string& line, int (&valDate)[3] )
 {
 	std::string			date[3];
 
@@ -136,7 +138,7 @@ bool	checkDateFormat( const std::string& line, int* valDate[3] )
 			if ( !isdigit(date[i][x]) )
 				return false;
 		}
-		*valDate[i] = std::atoi( date[i].c_str() );
+		valDate[i] = std::atoi( date[i].c_str() );
 	}
 	if ( line[4] != '-' || line[7] != '-' )
 		return false;
@@ -175,7 +177,7 @@ bool	checkValueFormat( const std::string& line )
 void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs, std::string& fsPath )
 {
 	std::string	line, date, value;
-	int*		dateVal[3];
+	int			dateVal[3];
 	size_t		sepPos;
 	bool		firstSkiped = false;
 
