@@ -6,12 +6,12 @@
 
 BitcoinExchange::BitcoinExchange( void ) {};
 
-BitcoinExchange::BitcoinExchange( std::string& tiPath )
+BitcoinExchange::BitcoinExchange( std::string& inputPath )
 {
-	std::string	tpPath = PATH_TP;
+	std::string	dataPath = PATH_DATA;
 
-	_fill( _dtb[TP], _fs[TP], tpPath );
-	_fill( _dtb[TI], _fs[TI], tiPath );
+	_fill( _dtb[DATA], _fs[DATA], dataPath );
+	_fill( _dtb[INPUT], _fs[INPUT], inputPath );
 	//...
 }
 
@@ -24,8 +24,8 @@ BitcoinExchange&	BitcoinExchange::operator=( const BitcoinExchange& other )
 	if ( this != &other )
 	{
 		// don't assign the fs to avoid have 2 fs pointing to the same file
-		this->_dtb[TP] = other._dtb[TP];
-		this->_dtb[TI] = other._dtb[TI];
+		this->_dtb[DATA] = other._dtb[DATA];
+		this->_dtb[INPUT] = other._dtb[INPUT];
 	}
 	return *this;
 }
@@ -73,7 +73,7 @@ bool			checkDateConsistency( int (&date)[3] )
 		return false;
 	if ( date[MONTH] < 1 || date[MONTH] > 12 )
 		return false;
-	if ( date[DAY] < 1 || date[DAY] > (maxDay[date[MONTH]] - 1) )
+	if ( date[DAY] < 1 || date[DAY] > (maxDay[date[MONTH] - 1]) )
 	{
 		// check bissextile year
 		if ( date[MONTH] == 2 && date[YEAR] % 400 == 0 && date[DAY] <= 29 )
@@ -133,6 +133,7 @@ bool	checkDateFormat( const std::string& line, int (&valDate)[3] )
 
 	for ( size_t i = 0; i < 3; i++ )
 	{
+		valDate[i] = 0;
 		for ( size_t x = 0; x < date[i].size(); x++ )
 		{
 			if ( !isdigit(date[i][x]) )
@@ -184,14 +185,15 @@ void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs
 	fs.open( fsPath.c_str() );
 	if ( fs.is_open() == false )
 		throw EFailedOpen();
-	
+
 	// subject say, file must be "date | value"
 	// in fact the file they give have no space, so I accept no space or just 1 space
 	while ( getline(fs, line) )
 	{
 		if ( !firstSkiped ) // to avoid first line
 			firstSkiped = true;
-		else if ( checkDateFormat(line, dateVal) && (bfind(line, '|') || bfind(line, ',')) && checkValueFormat(line) )
+		else if ( checkDateFormat(line, dateVal) && (bfind(line, '|') || bfind(line, ','))
+				&& checkValueFormat(line) )
 		{
 			sepPos 	= bfind(line, '|') ? line.find('|') : line.find(',');
 			date	= line.substr( 0, sepPos );
@@ -199,7 +201,7 @@ void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs
 
 			if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
 				dtb[date]		 = std::strtof( value.c_str(), NULL );
-			else if ( &dtb != &_dtb[TP] )
+			else if ( &dtb != &_dtb[DATA] )
 				_error_dtb[date] = errorMsgSelector( dateVal, value );
 		}
 	}
@@ -213,15 +215,15 @@ void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs
 
 void	BitcoinExchange::solver( void ) const
 {
-	std::cout << "==============================================" << std::endl;
+/* 	std::cout << "==============================================" << std::endl;
 	std::map<std::string, float>::const_iterator	it;
-	for ( it = _dtb[TI].begin(); it != _dtb[TI].end(); it++ )
+	for ( it = _dtb[INPUT].begin(); it != _dtb[INPUT].end(); it++ )
 	{
 		std::cout << it->first << " | " << it->second << std::endl;
 	}
 
 	std::cout << "==============================================" << std::endl;
-	for ( it = _dtb[TP].begin(); it != _dtb[TP].end(); it++ )
+	for ( it = _dtb[DATA].begin(); it != _dtb[DATA].end(); it++ )
 	{
 		std::cout << it->first << " | " << it->second << std::endl;
 	}
@@ -232,5 +234,5 @@ void	BitcoinExchange::solver( void ) const
 	for ( its = _error_dtb.begin(); its != _error_dtb.end(); its++ )
 	{
 		std::cout << its->first << " | " << its->second << std::endl;
-	}
+	} */
 }

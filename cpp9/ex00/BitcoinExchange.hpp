@@ -5,10 +5,9 @@
 #include <fstream>
 #include <map>
 
-#define PATH_TP	"data.csv"
-
-#define TP 0 // time/price
-#define TI 1 // time/input
+#define PATH_DATA	"data.csv"
+#define DATA		0
+#define INPUT		1
 
 class BitcoinExchange
 {
