@@ -4,15 +4,11 @@
  *                            Constructors, destructor, overloads
  *=========================================================================================**/
 
-BitcoinExchange::BitcoinExchange( void ) {};
-
-BitcoinExchange::BitcoinExchange( std::string& inputPath )
+BitcoinExchange::BitcoinExchange( void )
 {
 	std::string	dataPath = PATH_DATA;
 
-	_fill( _dtb[DATA], _fs[DATA], dataPath );
-	_fill( _dtb[INPUT], _fs[INPUT], inputPath );
-	//...
+	_fill_data_dtb( dataPath );
 }
 
 BitcoinExchange::BitcoinExchange( const BitcoinExchange& copy ) { *this = copy; };
@@ -23,9 +19,7 @@ BitcoinExchange&	BitcoinExchange::operator=( const BitcoinExchange& other )
 {
 	if ( this != &other )
 	{
-		// don't assign the fs to avoid have 2 fs pointing to the same file
-		this->_dtb[DATA] = other._dtb[DATA];
-		this->_dtb[INPUT] = other._dtb[INPUT];
+		this->_data_dtb = other._data_dtb;
 	}
 	return *this;
 }
@@ -53,16 +47,38 @@ bool	bfind( const std::string& str, char c )
 	return ( str.find(c) == std::string::npos ) ? false : true;
 }
 
-/**===========================================================================================
- *                                Fill the database (the maps)
- *=========================================================================================**/
-
-/*================================ Check consistency ==============================*/
-
 #define YEAR	0
 #define MONTH	1
 #define DAY		2
 
+void	errorMsgSelector( int (&date)[3], const std::string& val )
+{
+	int			maxDay[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	std::string	dateErrMsg;
+
+ 	dateErrMsg = "Error: bad input => " + date[YEAR] + '-' + date[MONTH] + '-' + date[DAY];
+
+	// 2009: birth of bitcoin
+	if ( date[YEAR] < 2009 || date[YEAR] > 2025 )
+		std::cout << dateErrMsg << std::endl;
+	if ( date[MONTH] < 1 || date[MONTH] > 12 )
+		std::cout << dateErrMsg << std::endl;
+	if ( date[DAY] < 1 || date[DAY] > (maxDay[date[MONTH]] - 1) )
+	{
+		// check bissextile year
+		if ( date[MONTH] == 2 && date[YEAR] % 400 == 0 && date[DAY] <= 29 )
+			std::cout << dateErrMsg << std::endl;
+		std::cout << dateErrMsg << std::endl;
+	}
+
+	if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
+		return valErrMsg[0]; // todo: print good msg
+	else if ( std::strtof(val.c_str(), NULL) < 0 )
+		return valErrMsg[1];
+	return "Error";
+}
+
+/*================================ Check consistency ==============================*/
 
 bool			checkDateConsistency( int (&date)[3] )
 {
@@ -90,33 +106,6 @@ bool			checkValueConsistency( const std::string& val )
 		return false;
 	return true;
 }
-
-std::string	errorMsgSelector( int (&date)[3], const std::string& val )
-{
-	int			maxDay[12]   = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	std::string	dateErrMsg   = "Error: bad input => " + date[YEAR] + '-' + date[MONTH] + '-' + date[DAY];
-	std::string	valErrMsg[2] = { "Error: too large a number.", "Error: not a positive number" };
-
-	// 2009: birth of bitcoin
-	if ( date[YEAR] < 2009 || date[YEAR] > 2025 )
-		return dateErrMsg;
-	if ( date[MONTH] < 1 || date[MONTH] > 12 )
-		return dateErrMsg;
-	if ( date[DAY] < 1 || date[DAY] > (maxDay[date[MONTH]] - 1) )
-	{
-		// check bissextile year
-		if ( date[MONTH] == 2 && date[YEAR] % 400 == 0 && date[DAY] <= 29 )
-			return dateErrMsg;
-		return dateErrMsg;
-	}
-
-	if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
-		return valErrMsg[0];
-	else if ( std::strtof(val.c_str(), NULL) < 0 )
-		return valErrMsg[1];
-	return "Error";
-}
-
 
 /*================================ Check format  ==============================*/
 
@@ -147,7 +136,6 @@ bool	checkDateFormat( const std::string& line, int (&valDate)[3] )
 	return true;
 }
 
-
 bool	checkValueFormat( const std::string& line )
 {
 	size_t		sepPos;
@@ -171,70 +159,73 @@ bool	checkValueFormat( const std::string& line )
 
 	return true;
 }
+/**===========================================================================================
+ *                                Fill the _data_dtb
+ *=========================================================================================**/
 
-/*========================= the function which fill the databases =========================*/
-
-
-void	BitcoinExchange::_fill( std::map<std::string, float>& dtb, std::fstream& fs, std::string& fsPath )
+void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 {
 	std::string	line, date, value;
 	int			dateVal[3];
 	size_t		sepPos;
 	bool		firstSkiped = false;
 
-	fs.open( fsPath.c_str() );
-	if ( fs.is_open() == false )
+	_fs_data.open( dataPath.c_str() );
+	if ( _fs_data.is_open() == false )
 		throw EFailedOpen();
 
 	// subject say, file must be "date | value"
 	// in fact the file they give have no space, so I accept no space or just 1 space
-	while ( getline(fs, line) )
+	while ( getline(_fs_data, line) )
 	{
 		if ( !firstSkiped ) // to avoid first line
 			firstSkiped = true;
-		else if ( checkDateFormat(line, dateVal) && (bfind(line, '|') || bfind(line, ','))
-				&& checkValueFormat(line) )
+		else if ( checkDateFormat(line, dateVal) && bfind(line, ',') && checkValueFormat(line) )
 		{
-			sepPos 	= bfind(line, '|') ? line.find('|') : line.find(',');
+			sepPos 	= line.find(',');
+			date	= line.substr( 0, sepPos );
+			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
+
+			// if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
+			_data_dtb[date] = std::strtof( value.c_str(), NULL );
+		}
+	}
+	_fs_data.close();
+}
+
+/**========================================================================
+ *                                  Solver
+ *========================================================================**/
+
+void	BitcoinExchange::solver( std::string& inputFile )
+{
+	std::string	line, date, value;
+	int			dateVal[3];
+	size_t		sepPos;
+	bool		firstSkiped = false;
+
+	_fs_input.open( inputFile.c_str() );
+	if ( _fs_data.is_open() == false )
+		throw EFailedOpen();
+
+	// subject say, file must be "date | value"
+	// in fact the file they give have no space, so I accept no space or just 1 space
+	while ( getline(_fs_input, line) )
+	{
+		if ( !firstSkiped ) // to avoid first line
+			firstSkiped = true;
+		else if ( checkDateFormat(line, dateVal) && bfind(line, ',') && checkValueFormat(line) )
+		{
+			sepPos 	= line.find(',');
 			date	= line.substr( 0, sepPos );
 			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
 
 			if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
-				dtb[date]		 = std::strtof( value.c_str(), NULL );
-			else if ( &dtb != &_dtb[DATA] )
-				_error_dtb[date] = errorMsgSelector( dateVal, value );
+				std::cout << date << " => " << value << " = "
+						  <<  std::strtof( value.c_str(), NULL ) * _data_dtb[date] << std::endl;
+			else
+				//todo: error corresponding
 		}
 	}
-	fs.close();
-}
-
-
-/**===========================================================================================
- *                                          Solver
- *=========================================================================================**/
-
-// faut tout garder dans le input
-
-void	BitcoinExchange::solver( void ) const
-{
-	std::cout << "==============================================" << std::endl;
-	std::map<std::string, float>::const_iterator	it;
-	for ( it = _dtb[INPUT].begin(); it != _dtb[INPUT].end(); it++ )
-	{
-		std::cout << it->first << " | " << it->second << std::endl;
-	}
-
-	std::cout << "==============================================" << std::endl;
-	for ( it = _dtb[DATA].begin(); it != _dtb[DATA].end(); it++ )
-	{
-		std::cout << it->first << " | " << it->second << std::endl;
-	}
-
-	std::cout << "==============================================" << std::endl;
-
-	std::map<std::string, std::string>::const_iterator	its;
-	for ( its = _error_dtb.begin(); its != _error_dtb.end(); its++ )
-	{
-		std::cout << its->first << " | " << its->second << std::endl;
-	}
+	_fs_data.close();
 }
