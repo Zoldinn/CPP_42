@@ -6,26 +6,26 @@
 #include <map>
 
 #define PATH_DATA	"data.csv"
-#define DATA		0
-#define INPUT		1
+#define YEAR		0
+#define MONTH		1
+#define DAY			2
 
 class BitcoinExchange
 {
 	private:
-											BitcoinExchange( void );
-		std::fstream						_fs[2];
-		std::map<std::string, float>		_dtb[2];
-		std::map<std::string, std::string>	_error_dtb;
-		void								_fill( std::map<std::string, float>& dtb,
-												std::fstream& fs, std::string& fsName );
+		std::fstream						_fs_data;
+		std::fstream						_fs_input;
+		std::map<std::string, float>		_data_dtb;
+		void								_fill_data_dtb( std::string& dataPath );
 
 	public:
-											BitcoinExchange( std::string& ti );
+											BitcoinExchange( void );
 											BitcoinExchange( const BitcoinExchange& copy );
 											~BitcoinExchange( void );
 		BitcoinExchange&					operator=( const BitcoinExchange& other );
 
-		void								solver( void ) const;
+		void								solver( std::string& inputFile );
+
 		class EWrongFormat : public std::exception 
 		{
 			public:
@@ -33,7 +33,10 @@ class BitcoinExchange
 		};
 		class EFailedOpen : public std::exception 
 		{
+			private:
+				std::string&	_msg;
 			public:
-				const char*	what() const throw();
+								EFailedOpen( std::string& msg );
+				const char*		what() const throw();
 		};
 };

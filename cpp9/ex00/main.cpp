@@ -8,12 +8,13 @@ int	main( int ac, char **av )
 		return 1;
 	}
 
-	std::string	ti = av[1];
+	std::string	inputFile = av[1];
 	
 	BitcoinExchange	*btc;
 	try 
 	{
-		btc = new BitcoinExchange( ti );
+		btc = new BitcoinExchange();
+		btc->solver( inputFile );
 	}
 	catch ( const BitcoinExchange::EFailedOpen& e ) 
 	{
@@ -26,7 +27,6 @@ int	main( int ac, char **av )
 		return -1;
 	}
 
-	btc->solver();
 
 	delete btc;
 	return 0;
