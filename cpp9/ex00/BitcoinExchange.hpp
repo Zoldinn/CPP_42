@@ -10,6 +10,7 @@
 #define YEAR		0
 #define MONTH		1
 #define DAY			2
+#define SIZE_T_ERR	static_cast<size_t>(-1)
 
 class BitcoinExchange
 {
