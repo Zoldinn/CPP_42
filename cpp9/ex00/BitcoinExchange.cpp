@@ -100,7 +100,7 @@ bool			checkDateConsistency( int (&date)[3] )
 
 bool			checkValueConsistency( const std::string& val )
 {
-	if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
+	if ( val.size() > 4 || (val.size() == 4 && val > "1000") || val[0] == '-' )
 		return false;
 	return true;
 }
@@ -185,14 +185,6 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
 
 			_data_dtb[date] = std::strtof( value.c_str(), NULL );
-
-			/* std::cerr << std::endl << "std::cerr :" << std::endl
-			<< "string | date : \"" << date << "\", "
-					 << "value: \"" << value << "\"." << std::endl
-			<< "std::strtof( value.c_str(), NULL ) = " << std::setprecision( value.size() )
-			<< std::strtof( value.c_str(), NULL ) << std::endl
-			<< "_data_dtb[" << date << "] = " << _data_dtb[date] << std::endl << std::endl;
-			std::cerr << " ================================= " << std::endl << std::endl; */
 		}
 	}
 	_fs_data.close();
@@ -228,13 +220,6 @@ void	BitcoinExchange::solver( std::string& inputFile )
 
 			if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
 			{
-/* 				std::cerr << std::endl << "std::cerr :" << std::endl
-						  << "string | date : \"" << date << "\", "
-								   << "value: \"" << value << "\"." << std::endl
-						  << "std::strtof( value.c_str(), NULL ) = " << std::setprecision( value.size() )
-						  << std::strtof( value.c_str(), NULL ) << std::endl
-						  << "_data_dtb[" << date << "] = " << _data_dtb[date] << std::endl << std::endl; */
-
 				closestData = _data_dtb.find(date);
 				if ( closestData == _data_dtb.end() ) // not find
 				{
@@ -243,7 +228,6 @@ void	BitcoinExchange::solver( std::string& inputFile )
 					else
 						closestData = _data_dtb.lower_bound(date);
 				}
-				// std::cerr << "Closest data : " << closestData->first << std::endl;
 				std::cout << date << "=> " << value << " = "
 						  <<  std::strtof( value.c_str(), NULL ) * closestData->second
 						  << std::endl;
