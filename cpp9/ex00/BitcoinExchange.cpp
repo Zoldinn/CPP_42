@@ -186,10 +186,10 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 
 			_data_dtb[date] = std::strtof( value.c_str(), NULL );
 
-/* 			std::cerr << std::endl << "std::cerr :" << std::endl
+			/* std::cerr << std::endl << "std::cerr :" << std::endl
 			<< "string | date : \"" << date << "\", "
 					 << "value: \"" << value << "\"." << std::endl
-			<< "std::strtof( value.c_str(), NULL ) = "
+			<< "std::strtof( value.c_str(), NULL ) = " << std::setprecision( value.size() )
 			<< std::strtof( value.c_str(), NULL ) << std::endl
 			<< "_data_dtb[" << date << "] = " << _data_dtb[date] << std::endl << std::endl;
 			std::cerr << " ================================= " << std::endl << std::endl; */
@@ -231,14 +231,21 @@ void	BitcoinExchange::solver( std::string& inputFile )
 /* 				std::cerr << std::endl << "std::cerr :" << std::endl
 						  << "string | date : \"" << date << "\", "
 								   << "value: \"" << value << "\"." << std::endl
-						  << "std::strtof( value.c_str(), NULL ) = "
+						  << "std::strtof( value.c_str(), NULL ) = " << std::setprecision( value.size() )
 						  << std::strtof( value.c_str(), NULL ) << std::endl
 						  << "_data_dtb[" << date << "] = " << _data_dtb[date] << std::endl << std::endl; */
 
-				closestData = (_data_dtb.find(date) == _data_dtb.end()) ?
-								_data_dtb.lower_bound(date) : _data_dtb.find(date);
+				closestData = _data_dtb.find(date);
+				if ( closestData == _data_dtb.end() ) // not find
+				{
+					if ( _data_dtb.lower_bound(date) != _data_dtb.begin() )
+						closestData = --_data_dtb.lower_bound(date);
+					else
+						closestData = _data_dtb.lower_bound(date);
+				}
+				// std::cerr << "Closest data : " << closestData->first << std::endl;
 				std::cout << date << "=> " << value << " = "
-						  <<  std::strtof( value.c_str(), NULL ) * (closestData->second)
+						  <<  std::strtof( value.c_str(), NULL ) * closestData->second
 						  << std::endl;
 			}
 			else
