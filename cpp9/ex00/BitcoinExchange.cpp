@@ -144,7 +144,7 @@ bool	checkValueFormat( const std::string& line )
 	val    = line.substr( ++sepPos ); // ++sepPos for starting at value and not at sep
 
 	// only accept positive integer or positive float with a '.', so no '-' neither sign '+'
-	for ( size_t i = 0; i < val.size(); i++ )
+	for ( size_t i = (val[0] == '-') ? 1 : 0; i < val.size(); i++ )
 	{
 		if ( !isdigit(val[i]) )
 		{
@@ -184,7 +184,6 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 			date	= line.substr( 0, sepPos );
 			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
 
-			// if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
 			_data_dtb[date] = std::strtof( value.c_str(), NULL );
 		}
 	}
@@ -212,18 +211,29 @@ void	BitcoinExchange::solver( std::string& inputFile )
 	{
 		if ( !firstSkiped ) // to avoid first line
 			firstSkiped = true;
-		else if ( checkDateFormat(line, dateVal) && bfind(line, '|') && checkValueFormat(line) )
+		else if ( checkDateFormat(line, dateVal) && checkValueFormat(line) )
 		{
 			sepPos 	= line.find( '|' );
 			date	= line.substr( 0, sepPos );
 			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
 
 			if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
-				std::cout << date << " => " << value << " = "
+			{
+				std::cerr << std::endl << "std::cerr :" << std::endl
+						  << "string | date : \"" << date << "\" ,"
+									  "value: \"" << value << "\"" << std::endl
+						  << "std::strtof( value.c_str(), NULL ) = "
+						  << std::strtof( value.c_str(), NULL ) << std::endl
+						  << "_data_dtb[date] = " << _data_dtb[date] << std::endl << std::endl;
+
+				std::cout << date << "=> " << value << " = "
 						  <<  std::strtof( value.c_str(), NULL ) * _data_dtb[date] << std::endl;
+			}
 			else
 				errorMsgSelector( dateVal, value );
 		}
+		else
+				errorMsgSelector( dateVal, value );
 	}
 	_fs_data.close();
 }
