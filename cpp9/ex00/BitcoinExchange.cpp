@@ -50,32 +50,6 @@ bool	bfind( const std::string& str, char c )
 	return ( str.find(c) == std::string::npos ) ? false : true;
 }
 
-void	errorMsgSelector( int (&date)[3], const std::string& val )
-{
-	int			maxDay[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-	// 2009: birth of bitcoin
-	if ( date[YEAR] < 2009 || date[YEAR] > 2025 )
-		std::cout << "Error: bad input => " << date[YEAR] << '-' << date[MONTH]
-					<< '-' << date[DAY] << std::endl;
-	else if ( date[MONTH] < 1 || date[MONTH] > 12 )
-		std::cout << "Error: bad input => " << date[YEAR] << '-' << date[MONTH]
-					<< '-' << date[DAY] << std::endl;
-	else if ( date[DAY] < 1 || date[DAY] > (maxDay[date[MONTH]] - 1) )
-	{
-		// check bissextile year
-		if ( date[MONTH] == 2 && date[YEAR] % 400 == 0 && date[DAY] <= 29 )
-			return ;
-		else
-			std::cout << "Error: bad input => " << date[YEAR] << '-' << date[MONTH]
-					<< '-' << date[DAY] << std::endl;
-	}
-	else if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
-		std::cout << "Error: too large number" << std::endl;
-	else if ( std::strtof(val.c_str(), NULL) < 0 )
-		std::cout << "Error: not a positive number" << std::endl;
-}
-
 size_t	count_word( const std::string& str, const std::string& sep )
 {
 	size_t	pos   = 0;
@@ -120,19 +94,23 @@ std::string*	split( const std::string& str, const std::string& sep )
 
 /*================================ Check consistency ==============================*/
 
-bool			checkDateConsistency( int (&date)[3] )
+bool			checkDateConsistency( std::string& date )
 {
-	int	maxDay[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	std::string*	strValues	= split(date, "-");
+	int				maxDay[12]	= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	int				values[3]	= { atoi(strValues[YEAR ].c_str()),
+									atoi(strValues[MONTH].c_str()),
+									atoi(strValues[DAY  ].c_str()) };
 
 	// 2009: birth of bitcoin
-	if ( date[YEAR] < 2009 || date[YEAR] > 2025 )
+	if ( values[YEAR] < 2009 || values[YEAR] > 2025 )
 		return false;
-	if ( date[MONTH] < 1 || date[MONTH] > 12 )
+	if ( values[MONTH] < 1 || values[MONTH] > 12 )
 		return false;
-	if ( date[DAY] < 1 || date[DAY] > ( maxDay[date[MONTH] - 1] ) )
+	if ( values[DAY] < 1 || values[DAY] > ( maxDay[values[MONTH] - 1] ) )
 	{
 		// check bissextile year
-		if ( date[MONTH] == 2 && date[YEAR] % 400 == 0 && date[DAY] <= 29 )
+		if ( values[MONTH] == 2 && values[YEAR] % 400 == 0 && values[DAY] <= 29 )
 			return true;
 		return false;
 	}
@@ -149,7 +127,7 @@ bool			checkValueConsistency( const std::string& val )
 
 /*================================ Check format  ==============================*/
 
-bool	checkDateFormat( const std::string& line, int (&valDate)[3] )
+/* bool	checkDateFormat( const std::string& line, int (&valDate)[3] )
 {
 	std::string			date[3];
 
@@ -174,9 +152,28 @@ bool	checkDateFormat( const std::string& line, int (&valDate)[3] )
 		return false;
 	
 	return true;
+} */
+
+//! V2
+bool	checkDateFormat( const std::string& date )
+{
+	std::string*	values;
+
+	if ( count_word(date, "-") != 3 )
+		return false;
+	values = split( date, "-" );
+	for ( size_t i = 0; i < 3; i++ )
+	{
+		for ( size_t x = 0; x < values[i].size(); x++ )
+		{
+			if ( !isdigit(values[i][x]) )
+				return false;
+		}
+	}
+	return true;
 }
 
-bool	checkValueFormat( const std::string& line )
+/* bool	checkValueFormat( const std::string& line )
 {
 	size_t		sepPos;
 	std::string	val;
@@ -198,7 +195,24 @@ bool	checkValueFormat( const std::string& line )
 	}
 
 	return true;
+} */
+
+//! V2
+bool	checkValueFormat( const std::string& value )
+{
+	for ( size_t i = (value[0] == '-') ? 1 : 0; i < value.size(); i++ )
+	{
+		if ( !isdigit(value[i]) )
+		{
+			if ( i != 0 && value[i] != '.' )
+				return false;
+			if ( i == 0 && value[i] == '.' )
+				return false;
+		}
+	}
+	return true;
 }
+
 /**===========================================================================================
  *                                Fill the _data_dtb
  *=========================================================================================**/
@@ -216,7 +230,7 @@ size_t		getSepPos( std::string& line )
 		return line.find( '|' );
 }
 
-void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
+/* void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 {
 	std::string	line, date, value;
 	int			dateVal[3];
@@ -245,13 +259,66 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 		}
 	}
 	_fs_data.close();
+} */
+
+//! V2
+void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
+{
+	std::string		line;
+	std::string*	tab;
+
+	_fs_data.open( dataPath.c_str() );
+	if ( _fs_data.is_open() == false )
+		throw EFailedOpen( dataPath );
+
+	while ( getline(_fs_data, line) )
+	{
+		if ( count_word(line, " ,|") != 3 )
+			continue;
+		tab = split( line, " ,|" );
+		if ( checkDateFormat(tab[DATE]) && checkValueFormat(tab[VAL]) )
+			_data_dtb[tab[DATE]] = std::strtof( tab[VAL].c_str(), NULL );
+		delete [] tab;
+	}
+	_fs_data.close();
 }
 
 /**========================================================================
  *                                  Solver
  *========================================================================**/
 
-void	BitcoinExchange::solver( std::string& inputFile )
+
+void	errorMsgSelector( const std::string& date, const std::string& val )
+{
+	std::string*	strValues	= split(date, "-");
+	int				maxDay[12]	= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	int				dateValues[3]	= { atoi(strValues[YEAR ].c_str()),
+									atoi(strValues[MONTH].c_str()),
+									atoi(strValues[DAY  ].c_str()) };
+
+	// 2009: birth of bitcoin
+	if ( dateValues[YEAR] < 2009 || dateValues[YEAR] > 2025 )
+		std::cout << "Error: bad input => " << dateValues[YEAR] << '-' << dateValues[MONTH]
+					<< '-' << dateValues[DAY] << std::endl;
+	else if ( dateValues[MONTH] < 1 || dateValues[MONTH] > 12 )
+		std::cout << "Error: bad input => " << dateValues[YEAR] << '-' << dateValues[MONTH]
+					<< '-' << dateValues[DAY] << std::endl;
+	else if ( dateValues[DAY] < 1 || dateValues[DAY] > (maxDay[dateValues[MONTH]] - 1) )
+	{
+		// check bissextile year
+		if ( dateValues[MONTH] == 2 && dateValues[YEAR] % 400 == 0 && dateValues[DAY] <= 29 )
+			return ;
+		else
+			std::cout << "Error: bad input => " << dateValues[YEAR] << '-' << dateValues[MONTH]
+					<< '-' << dateValues[DAY] << std::endl;
+	}
+	else if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
+		std::cout << "Error: too large number" << std::endl;
+	else if ( std::strtof(val.c_str(), NULL) < 0 )
+		std::cout << "Error: not a positive number" << std::endl;
+}
+
+/* void	BitcoinExchange::solver( std::string& inputFile )
 {
 	std::string								line, date, value;
 	int										dateVal[3];
@@ -298,4 +365,53 @@ void	BitcoinExchange::solver( std::string& inputFile )
 				errorMsgSelector( dateVal, value );
 	}
 	_fs_data.close();
+} */
+
+
+float	BitcoinExchange::_getClosestData( std::string& date )
+{
+	std::map<std::string, float>::iterator	closestData;
+
+	closestData = _data_dtb.find(date);
+	if ( closestData == _data_dtb.end() ) // not find
+	{
+		if ( _data_dtb.lower_bound(date) != _data_dtb.begin() )
+			closestData = --_data_dtb.lower_bound(date);
+		else
+			closestData = _data_dtb.lower_bound(date);
+	}
+	return closestData->second;
+}
+
+//! V2
+void	BitcoinExchange::solver( std::string& inputFile )
+{
+	std::string								line;
+	std::string*							tab;
+
+	_fs_input.open( inputFile.c_str() );
+	if ( _fs_input.is_open() == false )
+		throw EFailedOpen( inputFile );
+
+	while ( getline(_fs_input, line) )
+	{
+		if ( count_word(line, " ,|") != 3 )
+			continue;
+		tab = split( line, " ,|" );
+		if ( checkDateFormat(tab[DATE]) && checkValueFormat(tab[VAL]) )
+		{
+			if ( checkDateConsistency(tab[DATE]) && checkValueConsistency(tab[VAL]) )
+			{
+				std::cout << tab[DATE] << "=> " << tab[VAL] << " = "
+						  << std::strtof( tab[VAL].c_str(), NULL ) * _getClosestData( tab[DATE] )
+						  << std::endl;
+			}
+			else
+				errorMsgSelector( tab[DATE], tab[VAL] );
+		}
+		else
+			errorMsgSelector( tab[DATE], tab[VAL] );
+		delete [] tab;
+	}
+	_fs_input.close();
 }
