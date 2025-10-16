@@ -185,6 +185,14 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
 
 			_data_dtb[date] = std::strtof( value.c_str(), NULL );
+
+/* 			std::cerr << std::endl << "std::cerr :" << std::endl
+			<< "string | date : \"" << date << "\", "
+					 << "value: \"" << value << "\"." << std::endl
+			<< "std::strtof( value.c_str(), NULL ) = "
+			<< std::strtof( value.c_str(), NULL ) << std::endl
+			<< "_data_dtb[" << date << "] = " << _data_dtb[date] << std::endl << std::endl;
+			std::cerr << " ================================= " << std::endl << std::endl; */
 		}
 	}
 	_fs_data.close();
@@ -196,10 +204,11 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 
 void	BitcoinExchange::solver( std::string& inputFile )
 {
-	std::string	line, date, value;
-	int			dateVal[3];
-	size_t		sepPos;
-	bool		firstSkiped = false;
+	std::string								line, date, value;
+	int										dateVal[3];
+	size_t									sepPos;
+	bool									firstSkiped = false;
+	std::map<std::string, float>::iterator	closestData;
 
 	_fs_input.open( inputFile.c_str() );
 	if ( _fs_input.is_open() == false )
@@ -219,15 +228,18 @@ void	BitcoinExchange::solver( std::string& inputFile )
 
 			if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
 			{
-				std::cerr << std::endl << "std::cerr :" << std::endl
-						  << "string | date : \"" << date << "\" ,"
-									  "value: \"" << value << "\"" << std::endl
+/* 				std::cerr << std::endl << "std::cerr :" << std::endl
+						  << "string | date : \"" << date << "\", "
+								   << "value: \"" << value << "\"." << std::endl
 						  << "std::strtof( value.c_str(), NULL ) = "
 						  << std::strtof( value.c_str(), NULL ) << std::endl
-						  << "_data_dtb[date] = " << _data_dtb[date] << std::endl << std::endl;
+						  << "_data_dtb[" << date << "] = " << _data_dtb[date] << std::endl << std::endl; */
 
+				closestData = (_data_dtb.find(date) == _data_dtb.end()) ?
+								_data_dtb.lower_bound(date) : _data_dtb.find(date);
 				std::cout << date << "=> " << value << " = "
-						  <<  std::strtof( value.c_str(), NULL ) * _data_dtb[date] << std::endl;
+						  <<  std::strtof( value.c_str(), NULL ) * (closestData->second)
+						  << std::endl;
 			}
 			else
 				errorMsgSelector( dateVal, value );
