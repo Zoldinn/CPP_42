@@ -37,14 +37,14 @@ class BitcoinExchange
 		class EWrongFormat : public std::exception 
 		{
 			public:
-				const char*	what() const throw();
+				const char*					what() const throw();
 		};
 		class EFailedOpen : public std::exception 
 		{
 			private:
-				std::string&	_msg;
+				std::string&				_msg;
 			public:
-								EFailedOpen( std::string& msg );
-				const char*		what() const throw();
+											EFailedOpen( std::string& msg );
+				const char*					what() const throw();
 		};
 };

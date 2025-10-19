@@ -45,11 +45,6 @@ const char*	BitcoinExchange::EFailedOpen::what() const throw()
  *                                           Utils
  *=========================================================================================**/
 
-bool	bfind( const std::string& str, char c )
-{
-	return ( str.find(c) == std::string::npos ) ? false : true;
-}
-
 size_t	count_word( const std::string& str, const std::string& sep )
 {
 	size_t	pos   = 0;
@@ -65,6 +60,7 @@ size_t	count_word( const std::string& str, const std::string& sep )
 	}
 	return count;
 }
+
 
 std::string*	split( const std::string& str, const std::string& sep )
 {
@@ -92,6 +88,8 @@ std::string*	split( const std::string& str, const std::string& sep )
 	return split;
 }
 
+
+
 /*================================ Check consistency ==============================*/
 
 bool			checkDateConsistency( std::string& date )
@@ -114,6 +112,8 @@ bool			checkDateConsistency( std::string& date )
 			return true;
 		return false;
 	}
+
+	delete [] strValues;
 	return true;
 }
 
@@ -125,36 +125,10 @@ bool			checkValueConsistency( const std::string& val )
 	return true;
 }
 
+
+
 /*================================ Check format  ==============================*/
 
-/* bool	checkDateFormat( const std::string& line, int (&valDate)[3] )
-{
-	std::string			date[3];
-
-	if ( line.size() < 10 )
-		return false;
-
-	date[YEAR]	= line.substr( 0, 4 );
-	date[MONTH]	= line.substr( 5, 2 );
-	date[DAY]	= line.substr( 8, 2 );
-
-	for ( size_t i = 0; i < 3; i++ )
-	{
-		valDate[i] = 0;
-		for ( size_t x = 0; x < date[i].size(); x++ )
-		{
-			if ( !isdigit(date[i][x]) )
-				return false;
-		}
-		valDate[i] = std::atoi( date[i].c_str() );
-	}
-	if ( line[4] != '-' || line[7] != '-' )
-		return false;
-	
-	return true;
-} */
-
-//! V2
 bool	checkDateFormat( const std::string& date )
 {
 	std::string*	values;
@@ -167,37 +141,18 @@ bool	checkDateFormat( const std::string& date )
 		for ( size_t x = 0; x < values[i].size(); x++ )
 		{
 			if ( !isdigit(values[i][x]) )
+			{
+				delete [] values;
 				return false;
+			}
 		}
 	}
+	delete [] values;
 	return true;
 }
 
-/* bool	checkValueFormat( const std::string& line )
-{
-	size_t		sepPos;
-	std::string	val;
 
-	sepPos = bfind(line, '|') ? line.find('|') : line.find(',');
-	sepPos = ( line[sepPos + 1] == ' ' ) ? sepPos + 1 : sepPos;
-	val    = line.substr( ++sepPos ); // ++sepPos for starting at value and not at sep
 
-	// only accept positive integer or positive float with a '.', so no '-' neither sign '+'
-	for ( size_t i = (val[0] == '-') ? 1 : 0; i < val.size(); i++ )
-	{
-		if ( !isdigit(val[i]) )
-		{
-			if ( i != 0 && val[i] != '.' )
-				return false;
-			if ( i == 0 && val[i] == '.' )
-				return false;
-		}
-	}
-
-	return true;
-} */
-
-//! V2
 bool	checkValueFormat( const std::string& value )
 {
 	for ( size_t i = (value[0] == '-') ? 1 : 0; i < value.size(); i++ )
@@ -217,6 +172,7 @@ bool	checkValueFormat( const std::string& value )
  *                                Fill the _data_dtb
  *=========================================================================================**/
 
+
 size_t		getSepPos( std::string& line )
 {
 	if ( line.find('|') == std::string::npos )
@@ -230,38 +186,8 @@ size_t		getSepPos( std::string& line )
 		return line.find( '|' );
 }
 
-/* void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
-{
-	std::string	line, date, value;
-	int			dateVal[3];
-	size_t		sepPos;
-	bool		firstSkiped = false;
 
-	_fs_data.open( dataPath.c_str() );
-	if ( _fs_data.is_open() == false )
-		throw EFailedOpen( dataPath );
 
-	// subject say, file must be "date | value"
-	// in fact the file they give have no space, so I accept no space or just 1 space
-	while ( getline(_fs_data, line) )
-	{
-		if ( !firstSkiped ) // to avoid first line
-			firstSkiped = true;
-		else if ( checkDateFormat(line, dateVal) && bfind(line, ',') && checkValueFormat(line) )
-		{
-			sepPos	= getSepPos( line );
-			if ( sepPos == SIZE_T_ERR )
-				continue;
-			date	= line.substr( 0, sepPos );
-			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
-
-			_data_dtb[date] = std::strtof( value.c_str(), NULL );
-		}
-	}
-	_fs_data.close();
-} */
-
-//! V2
 void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 {
 	std::string		line;
@@ -291,10 +217,10 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 	_fs_data.close();
 }
 
+
 /**========================================================================
  *                                  Solver
  *========================================================================**/
-
 
 void	errorMsgSelector( const std::string& date, const std::string& val )
 {
@@ -332,56 +258,10 @@ void	errorMsgSelector( const std::string& date, const std::string& val )
 		std::cout << "Error: too large number" << std::endl;
 	else if ( std::strtof(val.c_str(), NULL) < 0 )
 		std::cout << "Error: not a positive number" << std::endl;
+
+	delete [] strValues;
 }
 
-/* void	BitcoinExchange::solver( std::string& inputFile )
-{
-	std::string								line, date, value;
-	int										dateVal[3];
-	size_t									sepPos;
-	bool									firstSkiped = false;
-	std::map<std::string, float>::iterator	closestData;
-
-	_fs_input.open( inputFile.c_str() );
-	if ( _fs_input.is_open() == false )
-		throw EFailedOpen( inputFile );
-
-	// subject say, file must be "date | value"
-	// in fact the file they give have no space, so I accept no space or just 1 space
-	while ( getline(_fs_input, line) )
-	{
-		if ( !firstSkiped ) // to avoid first line
-			firstSkiped = true;
-		else if ( checkDateFormat(line, dateVal) && checkValueFormat(line) )
-		{
-			sepPos	= getSepPos( line );
-			if ( sepPos == SIZE_T_ERR )
-				continue;
-			date	= line.substr( 0, sepPos );
-			value	= line.substr( (line[sepPos + 1] == ' ') ? sepPos + 2 : sepPos + 1 );
-
-			if ( checkDateConsistency(dateVal) && checkValueConsistency(value) )
-			{
-				closestData = _data_dtb.find(date);
-				if ( closestData == _data_dtb.end() ) // not find
-				{
-					if ( _data_dtb.lower_bound(date) != _data_dtb.begin() )
-						closestData = --_data_dtb.lower_bound(date);
-					else
-						closestData = _data_dtb.lower_bound(date);
-				}
-				std::cout << date << "=> " << value << " = "
-						  <<  std::strtof( value.c_str(), NULL ) * closestData->second
-						  << std::endl;
-			}
-			else
-				errorMsgSelector( dateVal, value );
-		}
-		else
-				errorMsgSelector( dateVal, value );
-	}
-	_fs_data.close();
-} */
 
 
 float&	BitcoinExchange::_getClosestData( std::string& date )
@@ -399,7 +279,8 @@ float&	BitcoinExchange::_getClosestData( std::string& date )
 	return closestData->second;
 }	
 
-//! V2
+
+
 void	BitcoinExchange::solver( std::string& inputFile )
 {
 	std::string		line;
