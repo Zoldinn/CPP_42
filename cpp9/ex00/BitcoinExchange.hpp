@@ -24,7 +24,7 @@ class BitcoinExchange
 		std::fstream						_fs_input;
 		std::map<std::string, float>		_data_dtb;
 		void								_fill_data_dtb( std::string& dataPath );
-		float								_getClosestData( std::string& date );
+		float&								_getClosestData( std::string& date );
 
 	public:
 											BitcoinExchange( void );

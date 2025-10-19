@@ -266,6 +266,7 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 {
 	std::string		line;
 	std::string*	tab;
+	bool			skipFirstLine = false;
 
 	_fs_data.open( dataPath.c_str() );
 	if ( _fs_data.is_open() == false )
@@ -273,9 +274,16 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 
 	while ( getline(_fs_data, line) )
 	{
-		if ( count_word(line, " ,|") != 3 )
+		if ( skipFirstLine == false )
+		{
+			skipFirstLine = true;
+			continue;
+		}
+		if ( count_word(line, " ,|") != 2 ) // not 3, because the sep isn't counted
 			continue;
 		tab = split( line, " ,|" );
+		if ( !tab )
+			continue;
 		if ( checkDateFormat(tab[DATE]) && checkValueFormat(tab[VAL]) )
 			_data_dtb[tab[DATE]] = std::strtof( tab[VAL].c_str(), NULL );
 		delete [] tab;
@@ -290,11 +298,19 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 
 void	errorMsgSelector( const std::string& date, const std::string& val )
 {
-	std::string*	strValues	= split(date, "-");
+	std::string*	strValues;
+	int				dateValues[3];
 	int				maxDay[12]	= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-	int				dateValues[3]	= { atoi(strValues[YEAR ].c_str()),
-									atoi(strValues[MONTH].c_str()),
-									atoi(strValues[DAY  ].c_str()) };
+
+	if ( count_word(date, "-") != 3 )
+	{
+		std::cout << "Error: bad input => " << date << std::endl;
+		return ;
+	}
+	strValues = split(date, "-");
+	dateValues[YEAR ] = atoi(strValues[YEAR ].c_str());
+	dateValues[MONTH] = atoi(strValues[MONTH].c_str());
+	dateValues[DAY  ] = atoi(strValues[DAY  ].c_str());
 
 	// 2009: birth of bitcoin
 	if ( dateValues[YEAR] < 2009 || dateValues[YEAR] > 2025 )
@@ -303,7 +319,7 @@ void	errorMsgSelector( const std::string& date, const std::string& val )
 	else if ( dateValues[MONTH] < 1 || dateValues[MONTH] > 12 )
 		std::cout << "Error: bad input => " << dateValues[YEAR] << '-' << dateValues[MONTH]
 					<< '-' << dateValues[DAY] << std::endl;
-	else if ( dateValues[DAY] < 1 || dateValues[DAY] > (maxDay[dateValues[MONTH]] - 1) )
+	else if ( dateValues[DAY] < 1 || dateValues[DAY] > (maxDay[dateValues[MONTH] - 1]) )
 	{
 		// check bissextile year
 		if ( dateValues[MONTH] == 2 && dateValues[YEAR] % 400 == 0 && dateValues[DAY] <= 29 )
@@ -368,7 +384,7 @@ void	errorMsgSelector( const std::string& date, const std::string& val )
 } */
 
 
-float	BitcoinExchange::_getClosestData( std::string& date )
+float&	BitcoinExchange::_getClosestData( std::string& date )
 {
 	std::map<std::string, float>::iterator	closestData;
 
@@ -381,13 +397,14 @@ float	BitcoinExchange::_getClosestData( std::string& date )
 			closestData = _data_dtb.lower_bound(date);
 	}
 	return closestData->second;
-}
+}	
 
 //! V2
 void	BitcoinExchange::solver( std::string& inputFile )
 {
-	std::string								line;
-	std::string*							tab;
+	std::string		line;
+	std::string*	tab;
+	bool			skipFirstLine = false;
 
 	_fs_input.open( inputFile.c_str() );
 	if ( _fs_input.is_open() == false )
@@ -395,15 +412,22 @@ void	BitcoinExchange::solver( std::string& inputFile )
 
 	while ( getline(_fs_input, line) )
 	{
-		if ( count_word(line, " ,|") != 3 )
+		if ( skipFirstLine == false )
+		{
+			skipFirstLine = true;
+			continue;
+		}
+		if ( count_word(line, " ,|") != 2 ) // not 3, because the sep isn't counted
 			continue;
 		tab = split( line, " ,|" );
 		if ( checkDateFormat(tab[DATE]) && checkValueFormat(tab[VAL]) )
 		{
 			if ( checkDateConsistency(tab[DATE]) && checkValueConsistency(tab[VAL]) )
 			{
+				float	closestData = _getClosestData( tab[DATE] );
+				float	lineVal		= std::strtof( tab[VAL].c_str(), NULL );
 				std::cout << tab[DATE] << "=> " << tab[VAL] << " = "
-						  << std::strtof( tab[VAL].c_str(), NULL ) * _getClosestData( tab[DATE] )
+						  << lineVal * closestData
 						  << std::endl;
 			}
 			else
