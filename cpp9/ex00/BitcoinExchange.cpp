@@ -159,10 +159,9 @@ bool	checkValueFormat( const std::string& value )
 	{
 		if ( !isdigit(value[i]) )
 		{
-			if ( i != 0 && value[i] != '.' )
-				return false;
-			if ( i == 0 && value[i] == '.' )
-				return false;
+			if ( i != 0 && value[i] == '.' )
+				continue;
+			return false;
 		}
 	}
 	return true;
@@ -222,7 +221,7 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
  *                                  Solver
  *========================================================================**/
 
-void	errorMsgSelector( const std::string& date, const std::string& val )
+/* void	errorMsgSelector( const std::string& date, const std::string& val )
 {
 	std::string*	strValues;
 	int				dateValues[3];
@@ -260,6 +259,19 @@ void	errorMsgSelector( const std::string& date, const std::string& val )
 		std::cout << "Error: not a positive number" << std::endl;
 
 	delete [] strValues;
+} */
+
+//! V2
+void	errorMsgSelector( const std::string& date, const std::string& val )
+{
+	if ( !checkDateFormat(date) )
+		std::cout << "Error: bad input => " << date << std::endl;
+	else if ( !checkValueFormat(val) )
+		std::cout << "Error: bad input => " << val << std::endl;
+	else if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
+		std::cout << "Error: too large number" << std::endl;
+	else if ( std::strtof(val.c_str(), NULL) < 0 )
+		std::cout << "Error: not a positive number" << std::endl;
 }
 
 
@@ -307,7 +319,7 @@ void	BitcoinExchange::solver( std::string& inputFile )
 			{
 				float	closestData = _getClosestData( tab[DATE] );
 				float	lineVal		= std::strtof( tab[VAL].c_str(), NULL );
-				std::cout << tab[DATE] << "=> " << tab[VAL] << " = "
+				std::cout << tab[DATE] << " => " << tab[VAL] << " = "
 						  << lineVal * closestData
 						  << std::endl;
 			}
