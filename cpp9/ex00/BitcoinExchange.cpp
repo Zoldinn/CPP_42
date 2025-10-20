@@ -221,47 +221,6 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
  *                                  Solver
  *========================================================================**/
 
-/* void	errorMsgSelector( const std::string& date, const std::string& val )
-{
-	std::string*	strValues;
-	int				dateValues[3];
-	int				maxDay[12]	= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-	if ( count_word(date, "-") != 3 )
-	{
-		std::cout << "Error: bad input => " << date << std::endl;
-		return ;
-	}
-	strValues = split(date, "-");
-	dateValues[YEAR ] = atoi(strValues[YEAR ].c_str());
-	dateValues[MONTH] = atoi(strValues[MONTH].c_str());
-	dateValues[DAY  ] = atoi(strValues[DAY  ].c_str());
-
-	// 2009: birth of bitcoin
-	if ( dateValues[YEAR] < 2009 || dateValues[YEAR] > 2025 )
-		std::cout << "Error: bad input => " << dateValues[YEAR] << '-' << dateValues[MONTH]
-					<< '-' << dateValues[DAY] << std::endl;
-	else if ( dateValues[MONTH] < 1 || dateValues[MONTH] > 12 )
-		std::cout << "Error: bad input => " << dateValues[YEAR] << '-' << dateValues[MONTH]
-					<< '-' << dateValues[DAY] << std::endl;
-	else if ( dateValues[DAY] < 1 || dateValues[DAY] > (maxDay[dateValues[MONTH] - 1]) )
-	{
-		// check bissextile year
-		if ( dateValues[MONTH] == 2 && dateValues[YEAR] % 400 == 0 && dateValues[DAY] <= 29 )
-			return ;
-		else
-			std::cout << "Error: bad input => " << dateValues[YEAR] << '-' << dateValues[MONTH]
-					<< '-' << dateValues[DAY] << std::endl;
-	}
-	else if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
-		std::cout << "Error: too large number" << std::endl;
-	else if ( std::strtof(val.c_str(), NULL) < 0 )
-		std::cout << "Error: not a positive number" << std::endl;
-
-	delete [] strValues;
-} */
-
-//! V2
 void	errorMsgSelector( const std::string& date, const std::string& val )
 {
 	if ( !checkDateFormat(date) )
