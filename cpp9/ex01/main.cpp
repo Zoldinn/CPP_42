@@ -9,11 +9,8 @@ int	main( int ac, char** av )
 	}
 	
 	RPN	rpn( av[1] );
-	try
-	{
-		rpn.solver();
-	}
-	catch (...)
+	try { rpn.solver(); }
+	catch ( const std::exception& e )
 	{
 		std::cerr << "Error" << std::endl;
 		return 1;

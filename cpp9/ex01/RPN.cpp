@@ -63,8 +63,7 @@ RPN&			RPN::operator=( const RPN& other )
 	if ( this != &other )
 	{
 		this->_expr = other._expr;
-		this->_digit_stack = other._digit_stack;
-		this->_oper_stack = other._oper_stack;
+		this->_stack = other._stack;
 	}
 	return *this;
 }
@@ -73,61 +72,58 @@ RPN&			RPN::operator=( const RPN& other )
  *                                  Solver
  *========================================================================**/
 
-bool			RPN::_fill_stacks( void )
+int				do_op( char op, int nb1, int nb2 )
 {
-	std::string*	splited_expr;
-
-	splited_expr = split( _expr, " " );
-	if ( !splited_expr )
-		return false;
-
-	for ( size_t i = 0; i < count_word(_expr, " "); i++ )
+	if ( (nb1 == 0 || nb2 == 0) && op == '/' )
+		throw std::exception();
+	switch ( op )
 	{
-		size_t size = splited_expr[i].size();
-
-		if ( size == 1 && isdigit(splited_expr[i][0]) )
-			_digit_stack.push( atoi( splited_expr[i].c_str() ) );
-		else if ( size == 1 && splited_expr[i].find_first_of("+-*/") != std::string::npos )
-			_oper_stack.push( splited_expr[i][0] );
-		else
-		{
-			delete [] splited_expr;
-			return false;
-		}
+		case '+':
+			return nb1 + nb2;
+		case '-':
+			return nb1 - nb2;
+		case '*':
+			return nb1 * nb2;
+		case '/':
+			return nb1 / nb2;
+		default:
+			throw std::exception();
 	}
-
-	delete [] splited_expr;
-	return true;
 }
 
 void			RPN::solver( void )
 {
-	int		nb1, nb2;
-	char	op;
+	std::string*	tab;
+	size_t			nbw;
+	int				nb1, nb2;
 
-	if ( _fill_stacks() == false || _oper_stack.size() != _digit_stack.size() - 1 )
+	tab = split( _expr, " " );
+	if ( !tab )
 		throw std::exception();
+	nbw = count_word(_expr, " ");
 
-	while ( _digit_stack.size() > 1 )
+	for ( size_t i = 0; i < nbw; i++ )
 	{
-		nb1 = _digit_stack.top(); _digit_stack.pop();
-		nb2 = _digit_stack.top(); _digit_stack.pop();
-		op  = _oper_stack.top();  _oper_stack.pop();
-
-		if ( (nb1 == 0 || nb2 == 0) && op == '/' )
-			throw std::exception();
-
-		switch ( op )
+		if ( tab[i].size() == 1 && isdigit(tab[i][0]) )
+			_stack.push( atoi( tab[i].c_str() ) );
+		else if ( tab[i].size() == 1 && tab[i].find_first_of("+-*/") != std::string::npos
+			&& _stack.size() >= 2 )
 		{
-			case '+':
-				_digit_stack.push( nb1 + nb2 ); break;
-			case '-':
-				_digit_stack.push( nb1 - nb2 ); break;
-			case '*':
-				_digit_stack.push( nb1 * nb2 ); break;
-			case '/':
-				_digit_stack.push( nb1 / nb2 ); break;
+			nb2 = _stack.top(); _stack.pop();
+			nb1 = _stack.top(); _stack.pop();
+			try { _stack.push( do_op(tab[i][0], nb1, nb2) ); }
+			catch ( const std::exception& e ) { delete [] tab; throw std::exception(); }
+		}
+		else
+		{
+			delete [] tab;
+			throw std::exception();
 		}
 	}
-	std::cout << _digit_stack.top() << std::endl;
+
+	delete [] tab;
+	if ( _stack.size() != 1 )
+		throw std::exception();
+
+	std::cout << _stack.top() << std::endl;
 }

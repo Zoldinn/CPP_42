@@ -17,9 +17,7 @@ class RPN
 	private:
 							RPN( void );
 		std::string			_expr;
-		std::stack<int>		_digit_stack;
-		std::stack<char>	_oper_stack;
-		bool				_fill_stacks( void );
+		std::stack<int>		_stack;
 
 };
 
