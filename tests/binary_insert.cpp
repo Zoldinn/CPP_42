@@ -8,27 +8,25 @@ int		binary_search( int i, std::vector<int> x )
 	while ( low <= high )
 	{
 		mid = low + (high - low) / 2;
-		if ( x[i] < x[mid] )
+		if ( x[i] <= x[mid] )
 			high = mid - 1;
 		else if ( x[mid] < x[i] )
 			low = mid + 1;
 	}
-	return mid;
+	return low;
 }
 
 void	binary_merge_sort( std::vector<int>& x )
 {
-	int	j, pos;
+	int	pos, tmp;
 
 	for ( int i = 1; i < x.size(); i++ )
 	{
 		pos = binary_search( i, x );
-		j = i;
-		while ( j > 0 && j > pos )
-		{
-			swap( &x[j], &x[j - 1] );
-			j = j - 1;
-		}
+		tmp = x[i];
+		for ( int k = i; k >= pos + 1; k-- )
+			x[k] = x[k - 1];
+		x[pos] = tmp;
 	}
 }
 
