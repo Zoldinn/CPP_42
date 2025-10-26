@@ -1,48 +1,38 @@
 #include "header.hpp"
 
-/* int		binary_search( std::vector<int> x, int a ) // return pos >= a
+int		binary_search( int i, std::vector<int> x )
 {
-	int	min = 0, mid = 0, max = 0;
+	int	low, mid, high;
 
-	for ( int i = 0; i < x.size(); i++ )
+	low = 0; high = i - 1;
+	while ( low <= high )
 	{
-		min = i;
-		mid = x.size() / 2;
-		max = x.size();
-		if ( x[mid] >= a && x[mid - 1] < a)
-			return mid;
-		else if ( x[mid] >= a )
-		{
-
-		}
+		mid = low + (high - low) / 2;
+		if ( x[i] < x[mid] )
+			high = mid - 1;
+		else if ( x[mid] < x[i] )
+			low = mid + 1;
 	}
-} */
-
-void	binary_search( std::vector<int> x, int a, int min, int mid, int max ) // return pos >= a
-{
-	if ( min == mid && mid == max )
-		return;
-	
-	if ( a > x[mid] )
-		binary_search( x, a, mid, ((max - mid) / 2) + mid, max );
-	if ( a < x[mid] )
-		binary_search( x, a, min, mid / 2, mid );
+	return mid;
 }
 
-void	binary_merge_sort( std::vector<int> x )
+void	binary_merge_sort( std::vector<int>& x )
 {
+	int	j, pos;
+
 	for ( int i = 1; i < x.size(); i++ )
 	{
-		int	j = i;
-		while ( j > 0 && x[i - 1] > x[i] )
+		pos = binary_search( i, x );
+		j = i;
+		while ( j > 0 && j > pos )
 		{
-			swap( &x[j-1], &x[i] );
+			swap( &x[j], &x[j - 1] );
 			j = j - 1;
 		}
 	}
 }
 
-/* int		main( int ac, char** av )
+int		main( int ac, char** av )
 {
 	std::vector<int>	tab;
 
@@ -55,21 +45,6 @@ void	binary_merge_sort( std::vector<int> x )
 	
 	std::cout << " ========== res ========== " << std::endl;
 	print_vi( tab );
-
-	return 0;
-} */
-
-int		main( int ac, char** av )
-{
-	std::vector<int>	tab;
-
-	if ( ac != 3 )
-		return 1;
-	tab = to_int( vsplit(av[1], " ") );
-	
-	int founded = tab.size()/2;
-	binary_search( tab, std::atoi(av[2]), 0, founded, tab.size() );
-	std::cout << tab[founded] << std::endl;
 
 	return 0;
 }
