@@ -18,8 +18,12 @@ class PmergeMe
 		~PmergeMe( void );
 		PmergeMe&			operator=( const PmergeMe& other );
 
-		void				vecMergeInsertSort( std::vector<int>& x );
-		void				lstMergeInsertSort( std::list<int>& x );
+		void				vecMergeInsertSort( void );
+		std::vector<pair>	vecDivideIntoPairs( void );
+
+		void				lstMergeInsertSort( void );
+		std::list<pair>		lstDivideIntoPairs( void );
+		
 		void				solver( void );
 
 	private:

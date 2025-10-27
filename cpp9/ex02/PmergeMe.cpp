@@ -55,3 +55,22 @@ PmergeMe&	PmergeMe::operator=( const PmergeMe& other )
  **           VECTOR | MERGE INSERTION SORT / FORD-JOHNSON ALGO
  *========================================================================**/
 
+std::vector<pair>	PmergeMe::vecDivideIntoPairs( void )
+{
+	std::vector<int>::iterator	it;
+	std::vector<pair>			res;
+
+	for ( it = _vec.begin(); it + 1 != _vec.end(); it++ )
+	{
+		if ( *it <= *(it + 1) )
+			res.push_back( pair{ *it, *(it + 1) } );
+		else
+			res.push_back( pair{ *(it + 1), *it } );
+	}
+	if ( it != _vec.end() )
+}
+
+void	PmergeMe::vecMergeInsertSort( void )
+{
+	std::vector<pair>	s;
+}
