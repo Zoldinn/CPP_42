@@ -55,22 +55,55 @@ PmergeMe&	PmergeMe::operator=( const PmergeMe& other )
  **           VECTOR | MERGE INSERTION SORT / FORD-JOHNSON ALGO
  *========================================================================**/
 
-std::vector<pair>	PmergeMe::vecDivideIntoPairs( void )
+void	vecMoveTo( std::vector<pair>& a, std::vector<pair>& b, size_t i )
 {
-	std::vector<int>::iterator	it;
-	std::vector<pair>			res;
+	pair	tmp;
 
-	for ( it = _vec.begin(); it + 1 != _vec.end(); it++ )
-	{
-		if ( *it <= *(it + 1) )
-			res.push_back( pair{ *it, *(it + 1) } );
-		else
-			res.push_back( pair{ *(it + 1), *it } );
-	}
-	if ( it != _vec.end() )
+	tmp = a[i];
+	for ( int k = i; k - 1 >= 0; k-- )
+		a[k] = a[k - 1];
+	a[0] = tmp;
+	b.push_back( a.front() );
+	a.erase( a.begin() );
 }
 
-void	PmergeMe::vecMergeInsertSort( void )
+std::vector<pair>	PmergeMe::VFormPairs( std::vector<int>& v )
 {
-	std::vector<pair>	s;
+	std::vector<pair>	res;
+
+	for ( int i = 0; i + 1 < v.size(); i++ )
+	{
+		if ( v[i] <= v[i + 1] )
+			res.push_back( pair{ v[i + 1], v[i] } );
+		else
+			res.push_back( pair{ v[i], v[i + 1] } );
+	}
+	return res;
+}
+
+std::vector<int>	PmergeMe::VFordJohnson( std::vector<int>& x )
+{
+	std::vector<pair>	pairs;
+	std::vector<int>	bigs, lowers;
+
+
+	if ( x.size() == 1 )
+		return x;
+	
+	pairs = VFormPairs( x );
+	for ( int i = 0; i < pairs.size(); i++ )
+	{
+		bigs.push_back( pairs[i].a );
+		lowers.push_back( pairs[i].b );
+	}
+
+	x = VFordJohnson( bigs );
+	// binary insertion with b's with JS
+	for ( int i = 0; i < lowers.size(); i++ )
+	{
+		// calculer a partir de i quel index insérer binairement selon JS
+		int k = // JS[i]
+		// moveTo() lowers[ JS[i] ] to x (x qui contiendra que les big trié recur)
+		// avec le binary insertion sort	
+	}
 }

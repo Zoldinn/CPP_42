@@ -13,21 +13,22 @@ typedef struct s_pair { int a, b; } pair;
 class PmergeMe
 {
 	public:
-		PmergeMe( char** av );
-		PmergeMe( const PmergeMe& copy );
-		~PmergeMe( void );
+							PmergeMe( char** av );
+							PmergeMe( const PmergeMe& copy );
+							~PmergeMe( void );
 		PmergeMe&			operator=( const PmergeMe& other );
 
-		void				vecMergeInsertSort( void );
-		std::vector<pair>	vecDivideIntoPairs( void );
+		std::vector<int>	VFordJohnson( std::vector<int>& x );
+		std::vector<pair>	VFormPairs( std::vector<int>& v );
 
-		void				lstMergeInsertSort( void );
-		std::list<pair>		lstDivideIntoPairs( void );
+		void				LFordJohnson( void );
+		std::list<pair>		LFormPairs( void );
 		
 		void				solver( void );
 
 	private:
-		PmergeMe( void );
+							PmergeMe( void );
+
 		std::vector<int>	_vec;
 		std::list<int>		_lst;
 };
