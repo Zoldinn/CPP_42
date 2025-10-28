@@ -81,6 +81,17 @@ std::vector<pair>	PmergeMe::VFormPairs( std::vector<int>& v )
 	return res;
 }
 
+std::vector<int>	JacobsthalNumbers( std::vector<int>& lowers )
+{
+	std::vector<int>	js;
+	int					k; // to find js(k) < lowers.size()
+
+	js[0] = 0; js[1] = 1; js[2] = 1;
+	for ( int i = 2; js[i] < lowers.size(); i++ )
+		js.push_back( js[i - 1] + (2 * js[i - 2]) );
+	
+}
+
 std::vector<int>	PmergeMe::VFordJohnson( std::vector<int>& x )
 {
 	std::vector<pair>	pairs;
