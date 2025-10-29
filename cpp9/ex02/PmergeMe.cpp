@@ -81,15 +81,30 @@ std::vector<pair>	PmergeMe::VFormPairs( std::vector<int>& v )
 	return res;
 }
 
-std::vector<int>	JacobsthalNumbers( std::vector<int>& lowers )
+std::vector<int>	jacobsthalNumbers( std::vector<int>& lowers )
 {
-	std::vector<int>	js;
-	int					k; // to find js(k) < lowers.size()
+	std::vector<int>			js, res;
+	std::vector<int>::iterator	last;
 
-	js[0] = 0; js[1] = 1; js[2] = 1;
-	for ( int i = 2; js[i] < lowers.size(); i++ )
-		js.push_back( js[i - 1] + (2 * js[i - 2]) );
-	
+	res.push_back( 1 );
+	js.push_back( 1 ); js.push_back( 3 ); // initialize the suite
+
+	last = js.end() - 1; // last element
+	while ( *last < lowers.size() )
+	{
+		for ( int i = *last; i > *(last - 1); i-- )
+			res.push_back( i );
+
+		js.push_back( *last + (2 * *(last - 1) ) ); 
+
+		last = js.end() - 1;
+	}
+	if ( res.size() < lowers.size() )
+	{
+		for ( int i = lowers.size(); i > *(last - 1); i-- )
+			res.push_back( i );
+	}
+	return res;
 }
 
 std::vector<int>	PmergeMe::VFordJohnson( std::vector<int>& x )
@@ -117,4 +132,5 @@ std::vector<int>	PmergeMe::VFordJohnson( std::vector<int>& x )
 		// moveTo() lowers[ JS[i] ] to x (x qui contiendra que les big trié recur)
 		// avec le binary insertion sort	
 	}
+	for ( )
 }
