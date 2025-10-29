@@ -4,6 +4,7 @@
 #include <sstream>
 #include <limits>
 #include <exception>
+#include <algorithm>
 
 #include <vector>
 #include <list>
@@ -18,11 +19,12 @@ class PmergeMe
 							~PmergeMe( void );
 		PmergeMe&			operator=( const PmergeMe& other );
 
-		std::vector<int>	VFordJohnson( std::vector<int>& x );
-		std::vector<pair>	VFormPairs( std::vector<int>& v );
+		std::vector<int>&	getVec( void );
+		std::vector<int>	vecFordJohnson( std::vector<int>& x );
+		std::vector<pair>	vecFormPairs( std::vector<int>& v );
 
-		void				LFordJohnson( void );
-		std::list<pair>		LFormPairs( void );
+		void				lstFordJohnson( void );
+		std::list<pair>		lstFormPairs( void );
 		
 		void				solver( void );
 
