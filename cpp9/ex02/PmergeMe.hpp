@@ -11,6 +11,8 @@
 
 typedef struct s_pair { int a, b; } pair;
 
+void	printVec( std::vector<int>& x );
+
 class PmergeMe
 {
 	public:
@@ -19,7 +21,6 @@ class PmergeMe
 							~PmergeMe( void );
 		PmergeMe&			operator=( const PmergeMe& other );
 
-		std::vector<int>&	getVec( void );
 		std::vector<int>	vecFordJohnson( std::vector<int>& x );
 		std::vector<pair>	vecFormPairs( std::vector<int>& v );
 
@@ -28,9 +29,9 @@ class PmergeMe
 		
 		void				solver( void );
 
+		std::vector<int>	vec;
+		std::list<int>		lst;
+
 	private:
 							PmergeMe( void );
-
-		std::vector<int>	_vec;
-		std::list<int>		_lst;
 };

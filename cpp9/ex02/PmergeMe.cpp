@@ -27,13 +27,13 @@ PmergeMe::PmergeMe( char** av )
 {
 	std::string	str;
 
-	for ( int i = 0; av[i]; i++ )
+	for ( int i = 1; av[i]; i++ )
 	{
 		str = av[i];
 		if ( checkIntOverflow(str) == false )
 			throw std::exception();
-		_vec.push_back( std::atoi( str.c_str() ) );
-		_lst.push_back( std::atoi( str.c_str() ) );
+		vec.push_back( std::atoi( str.c_str() ) );
+		lst.push_back( std::atoi( str.c_str() ) );
 	}
 }
 
@@ -41,12 +41,12 @@ PmergeMe::PmergeMe( const PmergeMe& copy ) { *this = copy; };
 
 PmergeMe::~PmergeMe( void ) {};
 
-PmergeMe&			PmergeMe::operator=( const PmergeMe& other )
+PmergeMe&	PmergeMe::operator=( const PmergeMe& other )
 {
 	if ( this != &other )
 	{
-		this->_vec = other._vec;
-		this->_lst = other._lst;
+		this->vec = other.vec;
+		this->lst = other.lst;
 	}
 	return *this;
 }
@@ -59,7 +59,7 @@ std::vector<pair>	PmergeMe::vecFormPairs( std::vector<int>& v )
 {
 	std::vector<pair>	res;
 
-	for ( size_t i = 0; i + 1 < v.size(); i++ )
+	for ( size_t i = 0; i + 1 < v.size(); i += 2 )
 	{
 		pair p;
 		if ( v[i] <= v[i + 1] )
@@ -106,7 +106,7 @@ std::vector<int>	jacobsthalNumbers( std::vector<int>& pend )
 
 
 
-void				insert( std::vector<int>& x, size_t insertPos, size_t toInsert )
+void	insert( std::vector<int>& x, size_t insertPos, size_t toInsert )
 {
 	int	tmp;
 
@@ -117,7 +117,7 @@ void				insert( std::vector<int>& x, size_t insertPos, size_t toInsert )
 	x[insertPos] = tmp;
 }
 
-void				binary_insert( std::vector<int>& x, int toInsert )
+void	binary_insert( std::vector<int>& x, int toInsert )
 {
 	std::vector<int>::iterator	insertIt;
 	size_t						insertPos;
@@ -141,18 +141,20 @@ std::vector<int>	PmergeMe::vecFordJohnson( std::vector<int>& x )
 		main.push_back( pairs[i].a );
 		pend.push_back( pairs[i].b );
 	}
+
+	std::cerr << "main : ";
+	printVec( main );
+	std::cerr << "pend : ";
+	printVec( pend );
+	std::cerr << std::endl;
+
 	x = vecFordJohnson( main );
 
 	js = jacobsthalNumbers( pend );
-	for ( size_t i = 0; i < js.size(); i++ )
-		binary_insert( main, pend[ js[i] ] );
+	for ( size_t i = 0; i < pend.size(); i++ )
+		binary_insert( main, pend[ js[i] - 1 ] ); // -1 because js numbers start at 1
 	if ( x.size() % 2 != 0 )
 		binary_insert( main, x.back() );
 
 	return main;
-}
-
-std::vector<int>&	PmergeMe::getVec( void )
-{
-	return _vec;
 }

@@ -23,14 +23,12 @@ int	main( int ac, char** av )
 		return 1;
 	}
 
-	std::vector<int>&	vec = s->getVec();
-
 	std::cout << "Before :" << std::endl;
-	printVec( vec );
+	printVec( s->vec );
 
 	std::cout << "After :" << std::endl;
-	s->vecFordJohnson( vec );
-	printVec( vec );
+	s->vec = s->vecFordJohnson( s->vec );
+	printVec( s->vec );
 
 	delete s;
 	return 0;
