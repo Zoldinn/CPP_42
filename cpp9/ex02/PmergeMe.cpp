@@ -142,13 +142,7 @@ std::vector<int>	PmergeMe::vecFordJohnson( std::vector<int>& x )
 		pend.push_back( pairs[i].b );
 	}
 
-	std::cerr << "main : ";
-	printVec( main );
-	std::cerr << "pend : ";
-	printVec( pend );
-	std::cerr << std::endl;
-
-	x = vecFordJohnson( main );
+	main = vecFordJohnson( main );
 
 	js = jacobsthalNumbers( pend );
 	for ( size_t i = 0; i < pend.size(); i++ )
