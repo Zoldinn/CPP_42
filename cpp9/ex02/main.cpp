@@ -7,6 +7,13 @@ void	printVec( std::vector<int>& x )
 	std::cout << std::endl;
 }
 
+void	printDeq( std::deque<int>& x )
+{
+	for ( size_t i = 0; i < x.size(); i++ )
+		std::cout << x[i] << " ";
+	std::cout << std::endl;
+}
+
 int	main( int ac, char** av )
 {
 	PmergeMe*	s;
@@ -23,12 +30,7 @@ int	main( int ac, char** av )
 		return 1;
 	}
 
-	std::cout << "Before :" << std::endl;
-	printVec( s->vec );
-
-	std::cout << "After :" << std::endl;
-	s->vec = s->vecFordJohnson( s->vec );
-	printVec( s->vec );
+	s->solver( s );
 
 	delete s;
 	return 0;
