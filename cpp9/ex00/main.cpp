@@ -19,11 +19,13 @@ int	main( int ac, char **av )
 	catch ( const BitcoinExchange::EFailedOpen& e ) 
 	{
 		std::cerr << "Error: " << e.what() << std::endl;
+		delete btc;
 		return -1;
 	}
 	catch (...)
 	{
 		std::cerr << "Error: Failed initialize class BitcoinExchange" << std::endl;
+		delete btc;
 		return -1;
 	}
 

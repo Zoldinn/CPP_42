@@ -270,7 +270,10 @@ void	BitcoinExchange::solver( std::string& inputFile )
 			continue;
 		}
 		if ( count_word(line, " ,|") != 2 ) // not 3, because the sep isn't counted
+		{
+			std::cout << "Error: bad input => " << line << std::endl;
 			continue;
+		}
 		tab = split( line, " ,|" );
 		if ( checkDateFormat(tab[DATE]) && checkValueFormat(tab[VAL]) )
 		{
