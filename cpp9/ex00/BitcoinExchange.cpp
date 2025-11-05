@@ -102,14 +102,24 @@ bool			checkDateConsistency( std::string& date )
 
 	// 2009: birth of bitcoin
 	if ( values[YEAR] < 2009 || values[YEAR] > 2025 )
+	{
+		delete [] strValues;
 		return false;
+	}
 	if ( values[MONTH] < 1 || values[MONTH] > 12 )
+	{
+		delete [] strValues;
 		return false;
+	}
 	if ( values[DAY] < 1 || values[DAY] > ( maxDay[values[MONTH] - 1] ) )
 	{
 		// check bissextile year
 		if ( values[MONTH] == 2 && values[YEAR] % 400 == 0 && values[DAY] <= 29 )
+		{
+			delete [] strValues;
 			return true;
+		}
+		delete [] strValues;
 		return false;
 	}
 
@@ -120,7 +130,7 @@ bool			checkDateConsistency( std::string& date )
 
 bool			checkValueConsistency( const std::string& val )
 {
-	if ( val.size() > 4 || (val.size() == 4 && val > "1000") || val[0] == '-' )
+	if ( std::strtof(val.c_str(), NULL) > 1000 || val[0] == '-' )
 		return false;
 	return true;
 }
@@ -205,7 +215,10 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
 			continue;
 		}
 		if ( count_word(line, " ,|") != 2 ) // not 3, because the sep isn't counted
+		{
+			delete [] tab;
 			continue;
+		}
 		tab = split( line, " ,|" );
 		if ( !tab )
 			continue;
@@ -221,13 +234,13 @@ void	BitcoinExchange::_fill_data_dtb( std::string& dataPath )
  *                                  Solver
  *========================================================================**/
 
-void	errorMsgSelector( const std::string& date, const std::string& val )
+void	errorMsgSelector( std::string& date, std::string& val )
 {
-	if ( !checkDateFormat(date) )
+	if ( !checkDateFormat(date) || !checkDateConsistency(date) )
 		std::cout << "Error: bad input => " << date << std::endl;
 	else if ( !checkValueFormat(val) )
 		std::cout << "Error: bad input => " << val << std::endl;
-	else if ( val.size() > 4 || (val.size() == 4 && val > "1000") )
+	else if ( std::strtof(val.c_str(), NULL) > 1000 )
 		std::cout << "Error: too large number" << std::endl;
 	else if ( std::strtof(val.c_str(), NULL) < 0 )
 		std::cout << "Error: not a positive number" << std::endl;
